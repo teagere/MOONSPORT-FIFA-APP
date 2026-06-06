@@ -13,6 +13,7 @@ import {
 
 const STORAGE_KEY = "moonsport-road-to-final-state";
 const DATA_VERSION = "fifa-official-rankings-2026-05-19-foundation";
+const STAFF_VERSION = "moonsport-staff-2026-06-06";
 const MANAGER_PASSWORD = "1111";
 const FIFA_STANDINGS_URL = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/standings";
 
@@ -36,10 +37,12 @@ function restoreOfficialTeams(existingTeams = []) {
 function normalizeState(input) {
   const stored = input || seedState;
   const shouldRestoreTeams = stored.settings?.dataVersion !== DATA_VERSION || stored.teams?.length !== 48;
+  const shouldRestoreStaff = stored.settings?.staffVersion !== STAFF_VERSION;
   const teams = shouldRestoreTeams ? restoreOfficialTeams(stored.teams) : recalculateTiers(stored.teams);
   const validTeamIds = new Set(teams.map((team) => team.id));
   const groupStandings = normalizeGroupStandings(stored.groupStandings, teams);
-  const staff = (stored.staff?.length ? stored.staff : seedState.staff).map((person) => ({
+  const staffSource = shouldRestoreStaff ? seedState.staff : stored.staff?.length ? stored.staff : seedState.staff;
+  const staff = staffSource.map((person) => ({
     ...person,
     tier1TeamId: validTeamIds.has(person.tier1TeamId) ? person.tier1TeamId : "",
     tier2TeamId: validTeamIds.has(person.tier2TeamId) ? person.tier2TeamId : "",
@@ -57,8 +60,9 @@ function normalizeState(input) {
       ...seedState.settings,
       ...stored.settings,
       dataVersion: DATA_VERSION,
+      staffVersion: STAFF_VERSION,
       dataSource: seedState.settings.dataSource,
-      drawPools: shouldRestoreTeams ? null : stored.settings?.drawPools || null,
+      drawPools: shouldRestoreTeams || shouldRestoreStaff ? null : stored.settings?.drawPools || null,
     },
   };
 }

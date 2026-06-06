@@ -210,6 +210,7 @@ export const seedState = {
     teamsLocked: false,
     liveDrawIndex: 0,
     drawPools: null,
+    groupsHidden: false,
     dataVersion: "fifa-official-rankings-2026-05-19-foundation",
     staffVersion: "moonsport-staff-2026-06-06",
     dataSource: "FIFA World Cup 2026 teams page and FIFA approved men's rankings API",

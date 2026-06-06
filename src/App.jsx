@@ -9,6 +9,8 @@ import {
   getTeam,
   getTeamsByTier,
   recalculateTiers,
+  statusPoints,
+  statusProgress,
 } from "./utils/tournament.js";
 
 const STORAGE_KEY = "moonsport-road-to-final-state";
@@ -18,8 +20,8 @@ const MANAGER_PASSWORD = "1111";
 const FIFA_STANDINGS_URL = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/standings";
 
 const managerViews = ["Manager", "Teams", "Draw Setup", "Live Draw"];
-const publicNavViews = ["Leaderboard", "Bracket"];
-const publicViews = ["Leaderboard", "Bracket"];
+const publicNavViews = ["Leaderboard", "Bracket", "TV View"];
+const publicViews = ["Leaderboard", "Bracket", "TV View"];
 
 const officialWarning =
   "Team rankings data is seeded from the official FIFA World Cup 2026 teams page and FIFA approved men’s rankings data.";
@@ -86,7 +88,7 @@ function loadState() {
 
 function App() {
   const [state, setState] = useState(loadState);
-  const [activeView, setActiveView] = useState("Leaderboard");
+  const [activeView, setActiveView] = useState("TV View");
   const [unlockedView, setUnlockedView] = useState(null);
   const [managerMenuOpen, setManagerMenuOpen] = useState(false);
   const [toast, setToast] = useState("");
@@ -135,15 +137,19 @@ function App() {
     "Live Draw": <LiveDraw {...shared} />,
     Leaderboard: <LeaderboardHub {...shared} />,
     Bracket: <BracketTab {...shared} />,
+    "TV View": <TvLeaderboard state={state} leaderboard={leaderboard} />,
   };
 
   return (
-    <div className="min-h-screen">
-      <header className="border-b border-white/10 bg-black/25">
+    <div className="app-shell min-h-screen">
+      <header className="site-header border-b border-white/10 bg-black/25">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
-          <div className="brand-lockup">
-            <img className="brand-wordmark" src="./brand/moonsport-wordmark-white.png" alt="Moonsport" />
-            <p className="brand-kicker">FIFA World Cup 2026</p>
+          <div className="app-title-wrap">
+            <img className="brand-icon brand-icon-title" src="./brand/moonsport-icon-white.png" alt="" aria-hidden="true" />
+            <div className="app-title-lockup">
+              <p>FIFA World Cup 2026</p>
+              <h1>Moonsport Road to the Final</h1>
+            </div>
           </div>
           <div className="header-actions">
           <nav className="top-nav">
@@ -181,12 +187,11 @@ function App() {
               </button>
             ))}
           </nav>
-          <img className="brand-icon" src="./brand/moonsport-icon-white.png" alt="" aria-hidden="true" />
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6 md:py-8">
+      <main className="site-main mx-auto max-w-7xl px-4 py-6 md:py-8">
         {publicViews.includes(activeView) || canEditActiveView ? (
           viewMap[activeView]
         ) : (
@@ -372,12 +377,11 @@ function Teams({ state, updateState, showToast, tier1, tier2, validTeamList }) {
     });
   }
 
-  function restoreTeams() {
+  function resetTeamStatuses() {
     updateState({
-      teams: restoreOfficialTeams(state.teams),
-      settings: { ...state.settings, drawPools: null },
+      teams: state.teams.map((team) => ({ ...team, status: "Active" })),
     });
-    showToast("Official 48 teams restored");
+    showToast("Team statuses reset");
   }
 
   return (
@@ -397,10 +401,9 @@ function Teams({ state, updateState, showToast, tier1, tier2, validTeamList }) {
             <p className="mt-1 text-sm text-white/60">Lock the official team structure before the draw. Status can still be changed as the tournament progresses.</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button className="btn bg-white/10" onClick={restoreTeams}>Restore 48 Teams</button>
+            <button className="btn bg-white/10" onClick={resetTeamStatuses}>Reset Statuses</button>
             <button className="btn bg-white/10" disabled={locked} onClick={() => updateState({ teams: recalculateTiers(state.teams) })}>Recalculate Tiers</button>
-            <button className="btn btn-primary" onClick={() => updateState({ settings: { ...state.settings, teamsLocked: true } })}>Lock Teams</button>
-            <button className="btn bg-white/10" onClick={() => updateState({ settings: { ...state.settings, teamsLocked: false } })}>Edit Teams</button>
+            <button className="btn btn-primary" onClick={() => updateState({ settings: { ...state.settings, teamsLocked: !locked } })}>{locked ? "Unlock Teams" : "Lock Teams"}</button>
           </div>
         </div>
 
@@ -532,21 +535,10 @@ function LiveDraw({ state, updateState, showToast, validTeamList, setActiveView 
   if (!person) return <EmptyPanel title="No participants yet" body="Add participants in Manager before starting the draw." />;
 
   return (
-    <section className="min-h-[72vh] rounded-xl border border-white/10 bg-[radial-gradient(circle_at_center,rgba(244,248,68,0.14),transparent_28rem),linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] p-5 md:p-10">
-      <div className="mb-8 flex gap-2 overflow-x-auto pb-2">
-        {staff.map((entry, staffIndex) => {
-          const active = entry.tier1TeamId && entry.tier2TeamId;
-          return (
-            <button key={entry.id} className={`badge shrink-0 ${staffIndex === index ? "border-lime/70 text-lime" : ""}`} onClick={() => updateState({ settings: { ...state.settings, liveDrawIndex: staffIndex } })}>
-              {entry.name}: {active ? "Active" : "TBC"}
-            </button>
-          );
-        })}
-      </div>
-
+    <section className="live-draw-shell panel min-h-[72vh] p-5 md:p-10">
       <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-        <p className="text-sm font-bold uppercase tracking-[0.3em] text-moon">Live company draw</p>
-        <h2 className="mt-4 text-4xl font-black md:text-7xl">Next up: {person.name}</h2>
+        <p className="live-draw-kicker">Next Up</p>
+        <h2 className="live-draw-title">{person.name}</h2>
         <p className="mt-3 text-white/55">Draw {index + 1} of {staff.length}</p>
 
         <div className="mt-8 grid w-full gap-4 md:grid-cols-2">
@@ -583,7 +575,7 @@ function RevealSlot({ label, team, onReveal }) {
   );
 }
 
-function LeaderboardHub({ state, leaderboard, canEdit, unlockCurrentView, showToast }) {
+function LeaderboardHub({ state, leaderboard }) {
   const alivePeople = leaderboard.filter((row) => row.status === "Active" || row.status === "Partially Active");
   const aliveTeams = state.teams.filter((team) => team.status !== "Knocked out");
 
@@ -596,27 +588,142 @@ function LeaderboardHub({ state, leaderboard, canEdit, unlockCurrentView, showTo
         <StatCard label="Participants" value={state.staff.length} />
       </section>
 
-      {!canEdit && <EditUnlockPanel label="leaderboard editing" onUnlock={unlockCurrentView} showToast={showToast} />}
-
       <section className="panel p-5">
         <h2 className="text-xl font-black">Leaderboard</h2>
-        <LeaderboardTable leaderboard={leaderboard} />
+        <LeaderboardTable leaderboard={leaderboard} groupStandings={state.groupStandings} />
       </section>
     </div>
   );
 }
 
+function TvLeaderboard({ state, leaderboard }) {
+  const alivePeople = leaderboard.filter((row) => row.status === "Active" || row.status === "Partially Active");
+  const aliveTeams = state.teams.filter((team) => team.status !== "Knocked out");
+  const tvColumnCount = 4;
+  const columns = splitIntoColumns(leaderboard, tvColumnCount);
+
+  return (
+    <section className="tv-stage" aria-label="16 by 9 TV leaderboard display">
+      <div className="tv-frame">
+        <div className="tv-header">
+          <div className="tv-metrics">
+            <span><strong>Stage:</strong> {state.settings.currentStage}</span>
+            <span><strong>People Alive:</strong> {alivePeople.length}</span>
+            <span><strong>Teams Alive:</strong> {aliveTeams.length}</span>
+          </div>
+        </div>
+
+        <div className="tv-columns">
+          {columns.map((column, columnIndex) => (
+            <div className={`tv-column ${columnIndex === 0 ? "tv-column-featured" : ""}`} key={columnIndex}>
+              {column.map((row, localIndex) => {
+                const rank = columnIndex * Math.ceil(leaderboard.length / tvColumnCount) + localIndex + 1;
+                return <TvLeaderboardRow key={row.id} row={row} rank={rank} localIndex={localIndex} groupStandings={state.groupStandings} />;
+              })}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TvLeaderboardRow({ row, rank, localIndex = 0, groupStandings }) {
+  const status = calculatePersonStatus(row, [row.team1, row.team2].filter(Boolean));
+  const isOut = status === "Knocked Out";
+  return (
+    <article className={`tv-row ${rank <= 3 ? "tv-row-podium" : ""} ${isOut ? "tv-row-out" : ""} ${localIndex < 2 ? "points-tooltip-down" : ""}`}>
+      <div className="tv-rank">{rank}</div>
+      <div className="tv-person">
+        <strong>{row.name}</strong>
+        <div className="tv-teams"><TeamLabel team={row.team1} compact /> <span className="tv-separator">/</span> <TeamLabel team={row.team2} compact /></div>
+      </div>
+      <div className="tv-score">
+        <strong>{row.points}</strong>
+      </div>
+      <PointsBreakdown row={row} groupStandings={groupStandings} />
+    </article>
+  );
+}
+
+function splitIntoColumns(items, count) {
+  const size = Math.ceil(items.length / count);
+  return Array.from({ length: count }, (_, index) => items.slice(index * size, index * size + size));
+}
+
+function TeamLabel({ team, compact = false }) {
+  if (!team) return <span className="team-label">TBC</span>;
+  const isOut = team.status === "Knocked out";
+  return <span className={`team-label ${isOut ? "team-label-out" : ""}`}>{team.flag} {compact ? team.country : team.country}</span>;
+}
+
+function PointsBreakdown({ row, groupStandings = [] }) {
+  const breakdown = getPointsBreakdown(row, groupStandings);
+  return (
+    <div className="points-breakdown" role="tooltip">
+      <strong>{row.name}</strong>
+      <div className="points-breakdown-total">Total: {breakdown.total}</div>
+      {breakdown.lines.map((line) => (
+        <div className="points-breakdown-line" key={line.label}>
+          <span>{line.label}</span>
+          <b>{line.points}</b>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function getPointsBreakdown(row, groupStandings = []) {
+  const groupPointsByTeam = new Map(groupStandings.map((standing) => [standing.teamId, Number(standing.points) || 0]));
+  const team1Group = groupPointsByTeam.get(row.team1?.id) || 0;
+  const team2Group = groupPointsByTeam.get(row.team2?.id) || 0;
+  const team1Knockout = statusPoints[row.team1?.status] || 0;
+  const team2Knockout = statusPoints[row.team2?.status] || 0;
+  const tier2KnockoutBonus = statusProgress[row.team2?.status] >= statusProgress["Round of 32"] ? 10 : 0;
+  const tier2QuarterBonus = statusProgress[row.team2?.status] >= statusProgress["Quarter-final"] ? 20 : 0;
+  const lines = [
+    { label: `${row.team1?.flag || ""} ${row.team1?.country || "Tier 1 TBC"} group`, points: team1Group },
+    { label: `${row.team1?.flag || ""} ${row.team1?.country || "Tier 1 TBC"} knockout`, points: team1Knockout },
+    { label: `${row.team2?.flag || ""} ${row.team2?.country || "Tier 2 TBC"} group`, points: team2Group },
+    { label: `${row.team2?.flag || ""} ${row.team2?.country || "Tier 2 TBC"} knockout`, points: team2Knockout },
+  ];
+
+  if (tier2KnockoutBonus) lines.push({ label: "Tier 2 knockout bonus", points: tier2KnockoutBonus });
+  if (tier2QuarterBonus) lines.push({ label: "Tier 2 quarter-final bonus", points: tier2QuarterBonus });
+
+  return {
+    total: team1Group + team2Group + team1Knockout + team2Knockout + tier2KnockoutBonus + tier2QuarterBonus,
+    lines,
+  };
+}
+
 function BracketTab({ state, updateState, showToast, canEdit, unlockCurrentView }) {
+  const groupsHidden = Boolean(state.settings.groupsHidden);
+
   return (
     <div className="space-y-5">
       {!canEdit && <EditUnlockPanel label="bracket editing" onUnlock={unlockCurrentView} showToast={showToast} />}
-      <GroupStage
-        teams={state.teams}
-        standings={state.groupStandings}
-        onChange={(groupStandings) => updateState({ groupStandings })}
-        showToast={showToast}
-        canEdit={canEdit}
-      />
+      <section className="panel p-4">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-moon">Bracket View</p>
+            <p className="mt-1 text-sm text-white/60">{groupsHidden ? "Group tables are hidden so the knockout bracket can take focus." : "Group tables are visible above the knockout bracket."}</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <button className="btn bg-white/10" disabled={groupsHidden} onClick={() => updateState({ settings: { ...state.settings, groupsHidden: true } })}>Hide Groups</button>
+            <button className="btn bg-white/10" disabled={!groupsHidden} onClick={() => updateState({ settings: { ...state.settings, groupsHidden: false } })}>Show Groups</button>
+          </div>
+        </div>
+      </section>
+      {!groupsHidden && (
+        <GroupStage
+          teams={state.teams}
+          standings={state.groupStandings}
+          onChange={(groupStandings) => updateState({ groupStandings })}
+          showToast={showToast}
+          canEdit={canEdit}
+        />
+      )}
       <Bracket
         rounds={state.bracket}
         thirdPlaceMatch={state.bracketThirdPlace}
@@ -625,6 +732,7 @@ function BracketTab({ state, updateState, showToast, canEdit, unlockCurrentView 
         canEdit={canEdit}
         onChange={(bracket) => updateState({ bracket })}
         onThirdPlaceChange={(bracketThirdPlace) => updateState({ bracketThirdPlace })}
+        presentation={groupsHidden}
       />
     </div>
   );
@@ -926,7 +1034,7 @@ function NumberField({ value, onChange, strong = false, disabled = false }) {
   );
 }
 
-function LeaderboardTable({ leaderboard, managerMode = false, onUpdateStaff, onDeleteStaff }) {
+function LeaderboardTable({ leaderboard, groupStandings = [], managerMode = false, onUpdateStaff, onDeleteStaff }) {
   const [showPointsInfo, setShowPointsInfo] = useState(false);
 
   return (
@@ -964,24 +1072,28 @@ function LeaderboardTable({ leaderboard, managerMode = false, onUpdateStaff, onD
           </tr>
         </thead>
         <tbody>
-          {leaderboard.map((row, index) => (
-            <tr key={row.id}>
+          {leaderboard.map((row, index) => {
+            const personStatus = calculatePersonStatus(row, [row.team1, row.team2].filter(Boolean));
+            const isOut = personStatus === "Knocked Out";
+            return (
+            <tr key={row.id} className={isOut ? "leaderboard-row-out" : ""}>
               <td>{index + 1}</td>
               <td>
                 {managerMode ? (
                   <input className="field" value={row.name} onChange={(event) => onUpdateStaff(row.id, "name", event.target.value)} />
                 ) : (
-                  <span className="font-bold">{row.name}</span>
+                  <span className={`points-hover font-bold ${index < 2 ? "points-tooltip-down" : ""}`}>{row.name}<PointsBreakdown row={row} groupStandings={groupStandings} /></span>
                 )}
               </td>
-              <td>{row.team1 ? `${row.team1.flag} ${row.team1.country}` : "TBC"}</td>
-              <td>{row.team2 ? `${row.team2.flag} ${row.team2.country}` : "TBC"}</td>
+              <td><TeamLabel team={row.team1} /></td>
+              <td><TeamLabel team={row.team2} /></td>
               <td>{row.team1?.status || "TBC"} / {row.team2?.status || "TBC"}</td>
               <td className="text-lg font-black text-lime">{row.points}</td>
-              <td><span className="badge">{calculatePersonStatus(row, [row.team1, row.team2].filter(Boolean))}</span></td>
+              <td><span className="badge">{personStatus}</span></td>
               {managerMode && <td><button className="btn btn-danger" onClick={() => onDeleteStaff(row.id)}>Delete</button></td>}
             </tr>
-          ))}
+            );
+          })}
         </tbody>
       </table>
     </div>
@@ -1009,7 +1121,7 @@ const round32Placeholders = [
 
 const matchNumberStart = [73, 89, 97, 101, 104];
 
-function Bracket({ rounds, thirdPlaceMatch, teams, standings, canEdit, onChange, onThirdPlaceChange }) {
+function Bracket({ rounds, thirdPlaceMatch, teams, standings, canEdit, onChange, onThirdPlaceChange, presentation = false }) {
   const bracketRounds = rounds?.length ? rounds : createDefaultBracket();
   const round32 = bracketRounds[0]?.matches || [];
   const round16 = bracketRounds[1]?.matches || [];
@@ -1052,8 +1164,24 @@ function Bracket({ rounds, thirdPlaceMatch, teams, standings, canEdit, onChange,
     onChange(autoFillRoundOf32(bracketRounds, teams, standings));
   }
 
+  const bracketActions = canEdit && (
+    <div className="flex flex-wrap gap-3">
+      <button className="btn btn-primary" onClick={autoFillKnockout}>Auto Fill Knockout From Groups</button>
+      <button
+        className="btn bg-white/10"
+        onClick={() => {
+          onChange(createDefaultBracket());
+          onThirdPlaceChange(createDefaultThirdPlaceMatch());
+        }}
+      >
+        Reset Bracket
+      </button>
+    </div>
+  );
+
   return (
-    <section className="space-y-5">
+    <section className={presentation ? "space-y-3" : "space-y-5"}>
+      {!presentation ? (
       <div className="panel p-5">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
@@ -1065,22 +1193,14 @@ function Bracket({ rounds, thirdPlaceMatch, teams, standings, canEdit, onChange,
                 : "Follow the knockout route as it progresses. Editing is locked for staff viewing."}
             </p>
           </div>
-          {canEdit && <div className="flex flex-wrap gap-3">
-            <button className="btn btn-primary" onClick={autoFillKnockout}>Auto Fill Knockout From Groups</button>
-            <button
-              className="btn bg-white/10"
-              onClick={() => {
-                onChange(createDefaultBracket());
-                onThirdPlaceChange(createDefaultThirdPlaceMatch());
-              }}
-            >
-              Reset Bracket
-            </button>
-          </div>}
+          {bracketActions}
         </div>
       </div>
+      ) : (
+        bracketActions && <div className="bracket-action-bar">{bracketActions}</div>
+      )}
 
-      <div className="bracket-shell">
+      <div className={`bracket-shell ${presentation ? "bracket-presentation" : ""}`}>
         <div className="bracket-board" aria-label="Editable knockout bracket">
           <div className="bracket-side">
             <BracketColumn title="Round of 32" roundIndex={0} matches={round32.slice(0, 8)} startIndex={0} teams={teams} canEdit={canEdit} onUpdate={updateMatch} />

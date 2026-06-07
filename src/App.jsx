@@ -833,6 +833,7 @@ function BracketTab({ state, updateState, showToast, canEdit, unlockCurrentView 
           </div>
         </div>
       </section>
+      <AutoSyncPanel autoSync={state.settings.autoSync} />
       {!groupsHidden && (
         <GroupStage
           teams={state.teams}
@@ -853,6 +854,51 @@ function BracketTab({ state, updateState, showToast, canEdit, unlockCurrentView 
         presentation={groupsHidden}
       />
     </div>
+  );
+}
+
+function AutoSyncPanel({ autoSync }) {
+  if (!autoSync) {
+    return (
+      <section className="sync-panel">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-moon">Auto Sync</p>
+          <p className="mt-1 text-sm text-white/60">No automated football-data sync has been recorded yet.</p>
+        </div>
+      </section>
+    );
+  }
+
+  const totalTeams = Number(autoSync.totalTeams) || 48;
+  const syncedTeams = Number(autoSync.syncedTeams) || 0;
+  const missingTeams = Array.isArray(autoSync.missingAppTeams) ? autoSync.missingAppTeams : [];
+  const unmatchedTeams = Array.isArray(autoSync.unmatchedApiTeams) ? autoSync.unmatchedApiTeams : [];
+  const syncedAt = autoSync.lastSyncedAt ? new Date(autoSync.lastSyncedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : "Unknown";
+
+  return (
+    <section className={`sync-panel ${syncedTeams === totalTeams ? "sync-panel-good" : "sync-panel-warning"}`}>
+      <div>
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-moon">Auto Sync</p>
+        <h3>{autoSync.source || "football-data.org"}</h3>
+        <p>Last sync: {syncedAt}</p>
+      </div>
+      <div className="sync-metrics">
+        <div>
+          <span>Teams synced</span>
+          <strong>{syncedTeams}/{totalTeams}</strong>
+        </div>
+        <div>
+          <span>API calls left</span>
+          <strong>{autoSync.rateLimit?.minuteAvailable ?? "TBC"}</strong>
+        </div>
+      </div>
+      {(missingTeams.length > 0 || unmatchedTeams.length > 0) && (
+        <div className="sync-details">
+          {missingTeams.length > 0 && <p><strong>Missing app teams:</strong> {missingTeams.join(", ")}</p>}
+          {unmatchedTeams.length > 0 && <p><strong>Unmatched API names:</strong> {unmatchedTeams.join(", ")}</p>}
+        </div>
+      )}
+    </section>
   );
 }
 

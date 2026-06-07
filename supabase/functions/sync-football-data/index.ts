@@ -5,19 +5,27 @@ const FOOTBALL_DATA_STANDINGS_URL = "https://api.football-data.org/v4/competitio
 
 const TEAM_NAME_ALIASES: Record<string, string> = {
   "bosnia and herzegovina": "Bosnia & Herzegovina",
+  "bosnia herzegovina": "Bosnia & Herzegovina",
   "bosnia-herzegovina": "Bosnia & Herzegovina",
   "bosnia & herzegovina": "Bosnia & Herzegovina",
   "czechia": "Czech Republic",
   "czech republic": "Czech Republic",
   "cote d'ivoire": "Ivory Coast",
   "côte d'ivoire": "Ivory Coast",
+  "cote divoire": "Ivory Coast",
   "ivory coast": "Ivory Coast",
+  "cabo verde": "Cape Verde",
+  "cape verde": "Cape Verde",
+  "cape verde islands": "Cape Verde",
   "curacao": "Curacao",
   "curaçao": "Curacao",
+  "congo dr": "DR Congo",
   "dr congo": "DR Congo",
   "d r congo": "DR Congo",
   "democratic republic of the congo": "DR Congo",
+  "ir iran": "Iran",
   "korea republic": "South Korea",
+  "republic of korea": "South Korea",
   "south korea": "South Korea",
   "turkey": "Turkiye",
   "türkiye": "Turkiye",
@@ -120,6 +128,7 @@ Deno.serve(async () => {
   const existingStandings = Array.isArray(appState.groupStandings) ? appState.groupStandings : [];
   const existingByTeamId = new Map(existingStandings.map((standing: { teamId: string }) => [standing.teamId, standing]));
   const syncedTeamIds = new Set<string>();
+  const unmatchedApiTeams = new Set<string>();
 
   const nextStandings = [...existingStandings];
 
@@ -127,7 +136,10 @@ Deno.serve(async () => {
     for (const row of standingGroup.table || []) {
       const country = canonicalCountryName(row.team?.name || row.team?.shortName || "");
       const team = teamByCountry.get(normalizeName(country));
-      if (!team) continue;
+      if (!team) {
+        unmatchedApiTeams.add(row.team?.name || row.team?.shortName || "Unknown team");
+        continue;
+      }
 
       const nextStanding = {
         ...(existingByTeamId.get(team.id) || {}),
@@ -154,6 +166,11 @@ Deno.serve(async () => {
     }
   }
 
+  const missingAppTeams = teams
+    .filter((team: { id: string }) => !syncedTeamIds.has(team.id))
+    .map((team: { country: string }) => team.country)
+    .sort();
+
   const nextState = {
     ...appState,
     groupStandings: nextStandings,
@@ -163,6 +180,9 @@ Deno.serve(async () => {
         source: "football-data.org",
         lastSyncedAt: new Date().toISOString(),
         syncedTeams: syncedTeamIds.size,
+        totalTeams: teams.length,
+        missingAppTeams,
+        unmatchedApiTeams: [...unmatchedApiTeams].sort(),
         rateLimit,
       },
     },
@@ -180,6 +200,9 @@ Deno.serve(async () => {
     ok: true,
     source: "football-data.org",
     syncedTeams: syncedTeamIds.size,
+    totalTeams: teams.length,
+    missingAppTeams,
+    unmatchedApiTeams: [...unmatchedApiTeams].sort(),
     rateLimit,
   });
 });

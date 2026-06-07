@@ -939,6 +939,79 @@ td {
   color: #ffffff;
 }
 
+.sync-panel {
+  display: grid;
+  gap: 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(25, 25, 25, 0.82);
+  padding: 16px;
+}
+
+.sync-panel h3 {
+  margin-top: 4px;
+  font-size: 1rem;
+  font-weight: 950;
+  color: #ffffff;
+}
+
+.sync-panel p {
+  font-size: 0.86rem;
+  color: rgba(232, 232, 232, 0.66);
+}
+
+.sync-panel-good {
+  border-color: rgba(244, 248, 68, 0.28);
+}
+
+.sync-panel-warning {
+  border-color: rgba(255, 201, 92, 0.34);
+  background: linear-gradient(145deg, rgba(255, 201, 92, 0.08), rgba(25, 25, 25, 0.82));
+}
+
+.sync-metrics {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.sync-metrics div {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.22);
+  padding: 12px;
+}
+
+.sync-metrics span {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 232, 232, 0.5);
+}
+
+.sync-metrics strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 1.4rem;
+  font-weight: 950;
+  color: #f4f844;
+}
+
+.sync-details {
+  display: grid;
+  gap: 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 201, 92, 0.22);
+  background: rgba(0, 0, 0, 0.24);
+  padding: 12px;
+}
+
+.sync-details strong {
+  color: #ffffff;
+}
+
 .group-table {
   width: 100%;
   min-width: 0;

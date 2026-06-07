@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createDefaultBracket, createDefaultGroupStandings, createDefaultThirdPlaceMatch, seedState, TEAM_STATUSES } from "./data/seedData.js";
 import {
   buildLeaderboard,
@@ -12,6 +12,7 @@ import {
   statusPoints,
   statusProgress,
 } from "./utils/tournament.js";
+import { fetchCloudState, isCloudSyncConfigured, saveCloudState } from "./utils/cloudSync.js";
 
 const STORAGE_KEY = "moonsport-road-to-final-state";
 const DATA_VERSION = "fifa-official-rankings-2026-05-19-foundation";
@@ -93,10 +94,108 @@ function App() {
   const [navMenuOpen, setNavMenuOpen] = useState(false);
   const [managerMenuOpen, setManagerMenuOpen] = useState(false);
   const [toast, setToast] = useState("");
+  const [cloudStatus, setCloudStatus] = useState(isCloudSyncConfigured() ? "connecting" : "local");
+  const cloudReadyRef = useRef(!isCloudSyncConfigured());
+  const skipNextCloudSaveRef = useRef(false);
+  const lastCloudJsonRef = useRef("");
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+    if (!isCloudSyncConfigured() || !cloudReadyRef.current) return undefined;
+    if (skipNextCloudSaveRef.current) {
+      skipNextCloudSaveRef.current = false;
+      return undefined;
+    }
+
+    const saveTimer = window.setTimeout(() => {
+      const stateJson = JSON.stringify(state);
+      saveCloudState(state)
+        .then(() => {
+          lastCloudJsonRef.current = stateJson;
+          setCloudStatus("connected");
+        })
+        .catch((error) => {
+          console.error(error);
+          setCloudStatus("offline");
+        });
+    }, 700);
+
+    return () => window.clearTimeout(saveTimer);
   }, [state]);
+
+  useEffect(() => {
+    if (!isCloudSyncConfigured()) return undefined;
+
+    let cancelled = false;
+
+    async function loadCloudState() {
+      try {
+        const cloudState = await fetchCloudState();
+        if (cancelled) return;
+
+        if (cloudState && Object.keys(cloudState).length > 0) {
+          const normalizedCloudState = normalizeState(cloudState);
+          lastCloudJsonRef.current = JSON.stringify(normalizedCloudState);
+          skipNextCloudSaveRef.current = true;
+          setState(normalizedCloudState);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizedCloudState));
+        } else {
+          await saveCloudState(state);
+          lastCloudJsonRef.current = JSON.stringify(state);
+        }
+
+        if (!cancelled) {
+          cloudReadyRef.current = true;
+          setCloudStatus("connected");
+        }
+      } catch (error) {
+        console.error(error);
+        if (!cancelled) {
+          cloudReadyRef.current = true;
+          setCloudStatus("offline");
+        }
+      }
+    }
+
+    loadCloudState();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isCloudSyncConfigured()) return undefined;
+
+    const refreshTimer = window.setInterval(() => {
+      if (!cloudReadyRef.current) return;
+
+      fetchCloudState()
+        .then((cloudState) => {
+          if (!cloudState || Object.keys(cloudState).length === 0) return;
+
+          const normalizedCloudState = normalizeState(cloudState);
+          const cloudJson = JSON.stringify(normalizedCloudState);
+          if (cloudJson === lastCloudJsonRef.current) {
+            setCloudStatus("connected");
+            return;
+          }
+
+          lastCloudJsonRef.current = cloudJson;
+          skipNextCloudSaveRef.current = true;
+          setState(normalizedCloudState);
+          localStorage.setItem(STORAGE_KEY, cloudJson);
+          setCloudStatus("connected");
+        })
+        .catch((error) => {
+          console.error(error);
+          setCloudStatus("offline");
+        });
+    }, 8000);
+
+    return () => window.clearInterval(refreshTimer);
+  }, []);
 
   const leaderboard = useMemo(() => buildLeaderboard(state.staff, state.teams, state.groupStandings), [state.staff, state.teams, state.groupStandings]);
   const tier1 = useMemo(() => getTeamsByTier(state.teams, 1), [state.teams]);
@@ -154,6 +253,9 @@ function App() {
             </div>
           </div>
           <div className="header-actions">
+          <span className={`cloud-status cloud-status-${cloudStatus}`}>
+            {cloudStatus === "connected" ? "Cloud live" : cloudStatus === "connecting" ? "Cloud connecting" : cloudStatus === "offline" ? "Cloud offline" : "Local save"}
+          </span>
           <button
             className={`hamburger-button ${navMenuOpen ? "is-open" : ""}`}
             onClick={() => setNavMenuOpen((isOpen) => !isOpen)}

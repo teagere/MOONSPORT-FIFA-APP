@@ -54,6 +54,54 @@ Useful source checks:
 
 ## Storage
 
-This MVP uses `localStorage`. Data is saved in the current browser only and belongs to the exact URL you use to open the app. Keep using one consistent address for the full tournament, preferably `http://127.0.0.1:5173/` from `Start Moonsport App.command`; switching between `localhost`, `127.0.0.1`, or different ports creates separate browser storage.
+By default the app uses `localStorage`. Data is saved in the current browser only and belongs to the exact URL you use to open the app. Keep using one consistent address for the full tournament, preferably `http://127.0.0.1:5173/` from `Start Moonsport App.command`; switching between `localhost`, `127.0.0.1`, or different ports creates separate browser storage.
 
 Use Manager > Data Backup > Download Backup before major updates, before shutting down, or before moving the sweepstake to another machine.
+
+## Optional Supabase Cloud Sync
+
+Supabase can be used as a shared cloud save file so staff and friends see the same live leaderboard from their own computers.
+
+Create this table in Supabase SQL Editor:
+
+```sql
+create table public.app_state (
+  id text primary key,
+  data jsonb not null,
+  updated_at timestamptz default now()
+);
+
+insert into public.app_state (id, data)
+values ('main', '{}'::jsonb);
+
+alter table public.app_state enable row level security;
+
+create policy "Anyone can view app state"
+on public.app_state
+for select
+to anon
+using (true);
+
+create policy "Anyone can update app state"
+on public.app_state
+for insert
+to anon
+with check (id = 'main');
+
+create policy "Anyone can save app state"
+on public.app_state
+for update
+to anon
+using (id = 'main')
+with check (id = 'main');
+```
+
+Then copy `.env.example` to `.env.local` and add your Supabase project URL and public anon key:
+
+```bash
+cp .env.example .env.local
+```
+
+Restart the dev server after changing `.env.local`. The header will show **Cloud live** when the app is connected. Without those values, the app stays in local save mode.
+
+For a public production app, replace the open write policies with Supabase Auth or a protected server function before sharing the manager tools widely.

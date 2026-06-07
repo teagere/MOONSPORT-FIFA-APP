@@ -279,6 +279,27 @@ textarea {
   color: rgba(255, 255, 255, 0.32);
 }
 
+.prize-artwork-page {
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 170px);
+}
+
+.prize-artwork-frame {
+  width: min(100%, 1280px);
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(244, 248, 68, 0.28);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.52);
+}
+
+.prize-artwork-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .brand-icon {
   display: block;
   width: 34px;
@@ -940,12 +961,14 @@ td {
 }
 
 .sync-panel {
-  display: grid;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 14px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(25, 25, 25, 0.82);
-  padding: 16px;
+  padding: 14px 16px;
 }
 
 .sync-panel h3 {
@@ -1002,6 +1025,7 @@ td {
 .sync-details {
   display: grid;
   gap: 6px;
+  min-width: min(520px, 100%);
   border-radius: 8px;
   border: 1px solid rgba(255, 201, 92, 0.22);
   background: rgba(0, 0, 0, 0.24);
@@ -1010,6 +1034,12 @@ td {
 
 .sync-details strong {
   color: #ffffff;
+}
+
+@media (max-width: 720px) {
+  .sync-panel {
+    display: grid;
+  }
 }
 
 .group-table {

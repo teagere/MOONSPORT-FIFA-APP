@@ -21,8 +21,8 @@ const MANAGER_PASSWORD = "1111";
 const FIFA_STANDINGS_URL = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/standings";
 
 const managerViews = ["Manager", "Teams", "Draw Setup", "Live Draw"];
-const publicNavViews = ["Leaderboard", "Bracket", "TV View"];
-const publicViews = ["Leaderboard", "Bracket", "TV View"];
+const publicNavViews = ["Leaderboard", "Bracket", "Prizes", "TV View"];
+const publicViews = ["Leaderboard", "Bracket", "Prizes", "TV View"];
 
 const officialWarning =
   "Team rankings data is seeded from the official FIFA World Cup 2026 teams page and FIFA approved men’s rankings data.";
@@ -238,6 +238,7 @@ function App() {
     "Live Draw": <LiveDraw {...shared} />,
     Leaderboard: <LeaderboardHub {...shared} />,
     Bracket: <BracketTab {...shared} />,
+    Prizes: <PrizesPage />,
     "TV View": <TvLeaderboard state={state} leaderboard={leaderboard} />,
   };
 
@@ -857,6 +858,16 @@ function BracketTab({ state, updateState, showToast, canEdit, unlockCurrentView 
   );
 }
 
+function PrizesPage() {
+  return (
+    <section className="prize-artwork-page">
+      <div className="prize-artwork-frame">
+        <img src="./road-to-glory.png" alt="Moonsport Road to Glory prize and event artwork" />
+      </div>
+    </section>
+  );
+}
+
 function AutoSyncPanel({ autoSync }) {
   if (!autoSync) {
     return (
@@ -874,26 +885,18 @@ function AutoSyncPanel({ autoSync }) {
   const missingTeams = Array.isArray(autoSync.missingAppTeams) ? autoSync.missingAppTeams : [];
   const unmatchedTeams = Array.isArray(autoSync.unmatchedApiTeams) ? autoSync.unmatchedApiTeams : [];
   const syncedAt = autoSync.lastSyncedAt ? new Date(autoSync.lastSyncedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : "Unknown";
+  const hasSyncWarning = syncedTeams !== totalTeams || missingTeams.length > 0 || unmatchedTeams.length > 0;
 
   return (
     <section className={`sync-panel ${syncedTeams === totalTeams ? "sync-panel-good" : "sync-panel-warning"}`}>
       <div>
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-moon">Auto Sync</p>
         <h3>{autoSync.source || "football-data.org"}</h3>
-        <p>Last sync: {syncedAt}</p>
+        <p>Last synced: {syncedAt}</p>
       </div>
-      <div className="sync-metrics">
-        <div>
-          <span>Teams synced</span>
-          <strong>{syncedTeams}/{totalTeams}</strong>
-        </div>
-        <div>
-          <span>API calls left</span>
-          <strong>{autoSync.rateLimit?.minuteAvailable ?? "TBC"}</strong>
-        </div>
-      </div>
-      {(missingTeams.length > 0 || unmatchedTeams.length > 0) && (
+      {hasSyncWarning && (
         <div className="sync-details">
+          <p><strong>Teams synced:</strong> {syncedTeams}/{totalTeams}</p>
           {missingTeams.length > 0 && <p><strong>Missing app teams:</strong> {missingTeams.join(", ")}</p>}
           {unmatchedTeams.length > 0 && <p><strong>Unmatched API names:</strong> {unmatchedTeams.join(", ")}</p>}
         </div>
@@ -932,27 +935,27 @@ function GroupStage({ teams, standings, onChange, showToast, canEdit }) {
 
   return (
     <section className="space-y-5">
-      <section className="paste-panel">
-        <div>
-          <h3>Paste FIFA Standings Update</h3>
-          <p>
-            Paste directly from FIFA’s group tables, including headings. The app also accepts compact rows such as <span>Mexico 3 2 1 0 5 2 7</span>.
-          </p>
-        </div>
-        {canEdit && (
+      {canEdit && (
+        <section className="paste-panel">
+          <div>
+            <h3>Paste FIFA Standings Update</h3>
+            <p>
+              Paste directly from FIFA’s group tables, including headings. The app also accepts compact rows such as <span>Mexico 3 2 1 0 5 2 7</span>.
+            </p>
+          </div>
           <textarea
             className="field min-h-36"
             placeholder={"Group A\nMexico 3 2 1 0 5 2 7\nSouth Korea 3 1 1 1 4 4 4"}
             value={pasteText}
             onChange={(event) => setPasteText(event.target.value)}
           />
-        )}
-        <div className="flex flex-wrap gap-3">
-          <button className="btn bg-white/10" onClick={openFifaStandings}>Open FIFA Standings</button>
-          {canEdit && <button className="btn btn-primary" onClick={applyPastedStandings}>Apply Pasted Standings</button>}
-          {canEdit && <button className="btn bg-white/10" onClick={() => setPasteText("")}>Clear Paste Box</button>}
-        </div>
-      </section>
+          <div className="flex flex-wrap gap-3">
+            <button className="btn bg-white/10" onClick={openFifaStandings}>Open FIFA Standings</button>
+            <button className="btn btn-primary" onClick={applyPastedStandings}>Apply Pasted Standings</button>
+            <button className="btn bg-white/10" onClick={() => setPasteText("")}>Clear Paste Box</button>
+          </div>
+        </section>
+      )}
 
       <div className="group-grid">
         {groups.map((group) => (

@@ -105,3 +105,31 @@ cp .env.example .env.local
 Restart the dev server after changing `.env.local`. The header will show **Cloud live** when the app is connected. Without those values, the app stays in local save mode.
 
 For a public production app, replace the open write policies with Supabase Auth or a protected server function before sharing the manager tools widely.
+
+## Optional Football-Data.org Auto Sync
+
+The repository includes a Supabase Edge Function template at `supabase/functions/sync-football-data/index.ts`.
+
+This function fetches FIFA World Cup standings from football-data.org, maps them into the app's `groupStandings`, and saves the updated shared state back to Supabase.
+
+Keep the football-data.org token private. Do not add it to `.env.local`, GitHub Pages variables, or any committed file.
+
+Required Supabase secret:
+
+```bash
+FOOTBALL_DATA_TOKEN=your-football-data-token
+```
+
+When deployed, the function reads:
+
+```txt
+https://api.football-data.org/v4/competitions/WC/standings?season=2026
+```
+
+football-data.org attribution is included in the app footer:
+
+```txt
+Football data provided by the Football-Data.org API
+```
+
+Recommended schedule during the tournament: every 15 minutes on match days. Keep the manual pasted-standings workflow as a backup in case the API is delayed, unavailable, or returns unexpected tournament data.

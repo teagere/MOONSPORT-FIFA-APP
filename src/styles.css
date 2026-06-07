@@ -269,6 +269,16 @@ textarea {
   color: #ff8c8c;
 }
 
+.app-footer {
+  position: relative;
+  z-index: 2;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.32);
+}
+
 .brand-icon {
   display: block;
   width: 34px;

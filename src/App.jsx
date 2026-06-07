@@ -313,6 +313,10 @@ function App() {
         )}
       </main>
 
+      <footer className="app-footer mx-auto max-w-7xl px-4 pb-6">
+        Football data provided by the Football-Data.org API
+      </footer>
+
       {toast && (
         <div className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-lg border border-lime/40 bg-lime px-4 py-3 text-sm font-bold text-midnight shadow-glow">
           {toast}

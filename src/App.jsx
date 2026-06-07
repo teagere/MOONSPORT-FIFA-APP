@@ -90,6 +90,7 @@ function App() {
   const [state, setState] = useState(loadState);
   const [activeView, setActiveView] = useState("TV View");
   const [unlockedView, setUnlockedView] = useState(null);
+  const [navMenuOpen, setNavMenuOpen] = useState(false);
   const [managerMenuOpen, setManagerMenuOpen] = useState(false);
   const [toast, setToast] = useState("");
 
@@ -114,6 +115,7 @@ function App() {
   function openView(view) {
     setActiveView(view);
     setUnlockedView(null);
+    setNavMenuOpen(false);
     setManagerMenuOpen(false);
   }
 
@@ -152,7 +154,17 @@ function App() {
             </div>
           </div>
           <div className="header-actions">
-          <nav className="top-nav">
+          <button
+            className={`hamburger-button ${navMenuOpen ? "is-open" : ""}`}
+            onClick={() => setNavMenuOpen((isOpen) => !isOpen)}
+            aria-expanded={navMenuOpen}
+            aria-label="Open navigation menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <nav className={`top-nav ${navMenuOpen ? "is-open" : ""}`}>
             <div className="manager-nav">
               <button
                 className={`btn ${managerViews.includes(activeView) ? "border-lime/70 bg-lime text-midnight" : "bg-white/[0.04] text-white/80"}`}

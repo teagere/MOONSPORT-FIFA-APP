@@ -982,7 +982,9 @@ td {
   height: min(calc(100vh - 205px), calc((100vw - 2rem) * 9 / 16));
   min-height: 520px;
   margin-inline: auto;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .bracket-presentation .bracket-board {

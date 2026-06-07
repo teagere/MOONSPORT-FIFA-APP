@@ -58,10 +58,25 @@ function getRateLimitHeaders(response: Response) {
   };
 }
 
+function getSupabaseSecretKey() {
+  const legacyServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (legacyServiceRoleKey) return legacyServiceRoleKey;
+
+  const secretKeysJson = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (!secretKeysJson) return "";
+
+  try {
+    const secretKeys = JSON.parse(secretKeysJson);
+    return Object.values(secretKeys).find((value) => typeof value === "string") || "";
+  } catch {
+    return "";
+  }
+}
+
 Deno.serve(async () => {
   const footballDataToken = Deno.env.get("FOOTBALL_DATA_TOKEN");
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const supabaseServiceRoleKey = getSupabaseSecretKey();
 
   if (!footballDataToken || !supabaseUrl || !supabaseServiceRoleKey) {
     return jsonResponse({ error: "Missing required Supabase secrets" }, 500);

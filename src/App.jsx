@@ -720,10 +720,11 @@ function TvLeaderboard({ state, leaderboard }) {
   const aliveTeams = state.teams.filter((team) => team.status !== "Knocked out");
   const tvColumnCount = 4;
   const columns = splitIntoColumns(leaderboard, tvColumnCount);
+  const compactMode = leaderboard.length > 40;
 
   return (
     <section className="tv-stage" aria-label="16 by 9 TV leaderboard display">
-      <div className="tv-frame">
+      <div className={`tv-frame ${compactMode ? "tv-frame-compact" : ""}`}>
         <div className="tv-header">
           <div className="tv-metrics">
             <span><strong>Stage:</strong> {state.settings.currentStage}</span>

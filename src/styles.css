@@ -750,6 +750,12 @@ td {
   padding: 0 16px 16px;
 }
 
+.tv-frame-compact .tv-columns {
+  grid-template-columns: minmax(0, 1fr) repeat(3, minmax(0, 0.96fr));
+  gap: 7px;
+  padding: 0 14px 14px;
+}
+
 .tv-column {
   display: grid;
   min-width: 0;
@@ -761,6 +767,16 @@ td {
 .tv-column-featured {
   grid-auto-rows: minmax(44px, 1fr);
   gap: 8px;
+}
+
+.tv-frame-compact .tv-column {
+  grid-auto-rows: minmax(31px, 1fr);
+  gap: 5px;
+}
+
+.tv-frame-compact .tv-column-featured {
+  grid-auto-rows: minmax(31px, 1fr);
+  gap: 5px;
 }
 
 .tv-row {
@@ -786,6 +802,19 @@ td {
   padding: 8px 9px;
   border-color: rgba(244, 248, 68, 0.18);
   background: rgba(255, 255, 255, 0.055);
+}
+
+.tv-frame-compact .tv-row {
+  grid-template-columns: 24px minmax(0, 1fr) 46px;
+  min-height: 31px;
+  gap: 5px;
+  padding: 4px 6px;
+}
+
+.tv-frame-compact .tv-column-featured .tv-row {
+  grid-template-columns: 24px minmax(0, 1fr) 46px;
+  min-height: 31px;
+  padding: 4px 6px;
 }
 
 .tv-column-featured .tv-row-podium {
@@ -823,6 +852,18 @@ td {
   font-size: 0.86rem;
 }
 
+.tv-frame-compact .tv-rank {
+  width: 24px;
+  height: 24px;
+  font-size: 0.72rem;
+}
+
+.tv-frame-compact .tv-column-featured .tv-rank {
+  width: 24px;
+  height: 24px;
+  font-size: 0.72rem;
+}
+
 .tv-person,
 .tv-score {
   min-width: 0;
@@ -842,6 +883,14 @@ td {
   font-size: clamp(0.86rem, 1.12vw, 1.08rem);
 }
 
+.tv-frame-compact .tv-person strong {
+  font-size: clamp(0.76rem, 0.94vw, 0.98rem);
+}
+
+.tv-frame-compact .tv-column-featured .tv-person strong {
+  font-size: clamp(0.76rem, 0.94vw, 0.98rem);
+}
+
 .tv-teams {
   display: block;
   overflow: hidden;
@@ -855,6 +904,15 @@ td {
 
 .tv-column-featured .tv-teams {
   font-size: clamp(0.62rem, 0.78vw, 0.78rem);
+}
+
+.tv-frame-compact .tv-teams {
+  margin-top: 1px;
+  font-size: clamp(0.58rem, 0.72vw, 0.74rem);
+}
+
+.tv-frame-compact .tv-column-featured .tv-teams {
+  font-size: clamp(0.58rem, 0.72vw, 0.74rem);
 }
 
 .tv-separator {
@@ -875,6 +933,14 @@ td {
 
 .tv-column-featured .tv-score strong {
   font-size: clamp(1.28rem, 1.78vw, 1.72rem);
+}
+
+.tv-frame-compact .tv-score strong {
+  font-size: clamp(0.92rem, 1.12vw, 1.08rem);
+}
+
+.tv-frame-compact .tv-column-featured .tv-score strong {
+  font-size: clamp(0.92rem, 1.12vw, 1.08rem);
 }
 
 @media (max-width: 920px) {

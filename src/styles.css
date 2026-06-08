@@ -823,7 +823,8 @@ td {
 }
 
 .tv-header,
-.tv-columns {
+.tv-columns,
+.tv-mobile-list {
   position: relative;
   z-index: 1;
 }
@@ -872,6 +873,10 @@ td {
   grid-template-columns: minmax(0, 1.18fr) repeat(3, minmax(0, 0.94fr));
   gap: 9px;
   padding: 0 16px 16px;
+}
+
+.tv-mobile-list {
+  display: none;
 }
 
 .tv-frame-compact .tv-columns {
@@ -1086,17 +1091,103 @@ td {
 
   .tv-frame {
     width: 100%;
-    aspect-ratio: auto;
-    min-height: 720px;
-  }
-
-  .tv-header,
-  .tv-columns {
-    grid-template-columns: 1fr;
   }
 
   .tv-metrics {
     gap: 10px;
+  }
+}
+
+@media (max-width: 720px) and (orientation: portrait) {
+  .tv-stage {
+    min-height: 0;
+    place-items: stretch;
+  }
+
+  .tv-frame,
+  .tv-frame-compact,
+  .tv-frame-dense {
+    width: 100%;
+    max-width: none;
+    aspect-ratio: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .tv-frame::after {
+    background:
+      linear-gradient(90deg, transparent calc(50% - 1px), rgba(232, 232, 232, 0.05) calc(50% - 1px), rgba(232, 232, 232, 0.05) calc(50% + 1px), transparent calc(50% + 1px)),
+      radial-gradient(circle at 50% 46%, transparent 0 5.6rem, rgba(232, 232, 232, 0.05) 5.66rem 5.74rem, transparent 5.82rem);
+  }
+
+  .tv-header {
+    padding: 12px 12px 8px;
+  }
+
+  .tv-metrics {
+    display: grid;
+    gap: 7px;
+    padding: 12px;
+  }
+
+  .tv-metrics span {
+    font-size: 1rem;
+    white-space: normal;
+  }
+
+  .tv-columns {
+    display: none;
+  }
+
+  .tv-mobile-list {
+    display: grid;
+    gap: 8px;
+    padding: 0 12px 14px;
+  }
+
+  .tv-mobile-list .tv-row,
+  .tv-frame-compact .tv-mobile-list .tv-row,
+  .tv-frame-dense .tv-mobile-list .tv-row {
+    grid-template-columns: 34px minmax(0, 1fr) 56px;
+    min-height: 58px;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .tv-mobile-list .tv-rank,
+  .tv-frame-compact .tv-mobile-list .tv-rank,
+  .tv-frame-dense .tv-mobile-list .tv-rank {
+    width: 29px;
+    height: 29px;
+    font-size: 0.86rem;
+  }
+
+  .tv-mobile-list .tv-person strong,
+  .tv-frame-compact .tv-mobile-list .tv-person strong,
+  .tv-frame-dense .tv-mobile-list .tv-person strong {
+    font-size: 1.02rem;
+    line-height: 1.08;
+  }
+
+  .tv-mobile-list .tv-teams,
+  .tv-frame-compact .tv-mobile-list .tv-teams,
+  .tv-frame-dense .tv-mobile-list .tv-teams {
+    margin-top: 3px;
+    font-size: 0.8rem;
+    line-height: 1.18;
+    white-space: normal;
+  }
+
+  .tv-mobile-list .tv-score strong,
+  .tv-frame-compact .tv-mobile-list .tv-score strong,
+  .tv-frame-dense .tv-mobile-list .tv-score strong {
+    font-size: 1.42rem;
+  }
+
+  .tv-mobile-list .points-breakdown {
+    right: 0;
+    left: auto;
+    width: min(300px, calc(100vw - 42px));
   }
 
 }

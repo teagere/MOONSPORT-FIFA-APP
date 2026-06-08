@@ -749,6 +749,12 @@ function TvLeaderboard({ state, leaderboard }) {
             </div>
           ))}
         </div>
+
+        <div className="tv-mobile-list">
+          {leaderboard.map((row, index) => (
+            <TvLeaderboardRow key={row.id} row={row} rank={index + 1} localIndex={index} groupStandings={state.groupStandings} />
+          ))}
+        </div>
       </div>
     </section>
   );

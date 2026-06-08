@@ -46,7 +46,7 @@ textarea {
 }
 
 .text-moon {
-  color: #0066cc;
+  color: #f4f844;
 }
 
 .text-gold {
@@ -198,11 +198,12 @@ textarea {
 }
 
 .header-actions {
-  display: flex;
+  display: grid;
   min-width: 0;
   align-items: center;
   justify-content: flex-end;
-  gap: 14px;
+  justify-items: end;
+  gap: 6px;
 }
 
 .hamburger-button {
@@ -243,6 +244,17 @@ textarea {
   white-space: nowrap;
 }
 
+.nav-sync-status {
+  color: #4aa3ff;
+  font-size: clamp(0.62rem, 0.78vw, 0.78rem);
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  text-align: right;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .cloud-status {
   display: inline-flex;
   align-items: center;
@@ -260,8 +272,10 @@ textarea {
 }
 
 .cloud-status-connected {
-  border-color: rgba(244, 248, 68, 0.45);
-  color: #f4f844;
+  border-color: rgba(0, 102, 204, 0.58);
+  background: rgba(0, 102, 204, 0.13);
+  color: #4aa3ff;
+  box-shadow: 0 0 22px rgba(0, 102, 204, 0.12);
 }
 
 .cloud-status-offline {
@@ -317,6 +331,8 @@ textarea {
 @media (max-width: 720px) {
   .site-header > div {
     position: relative;
+    min-height: 72px;
+    gap: 10px;
   }
 
   .brand-wordmark {
@@ -324,17 +340,26 @@ textarea {
   }
 
   .app-title-lockup p {
-    font-size: 0.58rem;
-    letter-spacing: 0.18em;
+    font-size: 0.54rem;
+    letter-spacing: 0.14em;
+    text-decoration: none;
   }
 
   .app-title-lockup h1 {
-    font-size: clamp(0.78rem, 4vw, 1rem);
+    max-width: 175px;
+    overflow: hidden;
+    font-size: clamp(0.72rem, 3.55vw, 0.9rem);
+    line-height: 1;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .app-title-wrap {
+    flex: 1 1 auto;
+    min-width: 0;
     gap: 10px;
-    padding-right: 8px;
+    padding-right: 4px;
   }
 
   .brand-kicker {
@@ -343,10 +368,15 @@ textarea {
   }
 
   .header-actions {
+    flex: 0 0 auto;
     gap: 8px;
   }
 
   .cloud-status {
+    display: none;
+  }
+
+  .nav-sync-status {
     display: none;
   }
 
@@ -357,10 +387,10 @@ textarea {
   .top-nav {
     position: absolute;
     top: calc(100% + 10px);
-    right: 0;
+    right: 4px;
     z-index: 80;
     display: none;
-    width: min(280px, calc(100vw - 32px));
+    width: min(300px, calc(100vw - 24px));
     max-height: min(72vh, 520px);
     overflow-y: auto;
     border-radius: 10px;
@@ -960,8 +990,9 @@ td {
   }
 
   .tv-metrics {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
   }
+
 }
 
 .reveal-card {
@@ -1024,88 +1055,6 @@ td {
 .paste-panel span {
   font-weight: 900;
   color: #ffffff;
-}
-
-.sync-panel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(25, 25, 25, 0.82);
-  padding: 14px 16px;
-}
-
-.sync-panel h3 {
-  margin-top: 4px;
-  font-size: 1rem;
-  font-weight: 950;
-  color: #ffffff;
-}
-
-.sync-panel p {
-  font-size: 0.86rem;
-  color: rgba(232, 232, 232, 0.66);
-}
-
-.sync-panel-good {
-  border-color: rgba(244, 248, 68, 0.28);
-}
-
-.sync-panel-warning {
-  border-color: rgba(255, 201, 92, 0.34);
-  background: linear-gradient(145deg, rgba(255, 201, 92, 0.08), rgba(25, 25, 25, 0.82));
-}
-
-.sync-metrics {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-}
-
-.sync-metrics div {
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.22);
-  padding: 12px;
-}
-
-.sync-metrics span {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(232, 232, 232, 0.5);
-}
-
-.sync-metrics strong {
-  display: block;
-  margin-top: 4px;
-  font-size: 1.4rem;
-  font-weight: 950;
-  color: #f4f844;
-}
-
-.sync-details {
-  display: grid;
-  gap: 6px;
-  min-width: min(520px, 100%);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 201, 92, 0.22);
-  background: rgba(0, 0, 0, 0.24);
-  padding: 12px;
-}
-
-.sync-details strong {
-  color: #ffffff;
-}
-
-@media (max-width: 720px) {
-  .sync-panel {
-    display: grid;
-  }
 }
 
 .group-table {

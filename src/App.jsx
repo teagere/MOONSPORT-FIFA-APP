@@ -21,8 +21,8 @@ const MANAGER_PASSWORD = "1111";
 const FIFA_STANDINGS_URL = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/standings";
 
 const managerViews = ["Manager", "Teams", "Draw Setup", "Live Draw"];
-const publicNavViews = ["Leaderboard", "Bracket", "Prizes", "TV View"];
-const publicViews = ["Leaderboard", "Bracket", "Prizes", "TV View"];
+const publicNavViews = ["Leaderboard", "Bracket", "TV View", "Prizes"];
+const publicViews = ["Leaderboard", "Bracket", "TV View", "Prizes"];
 
 const officialWarning =
   "Team rankings data is seeded from the official FIFA World Cup 2026 teams page and FIFA approved men’s rankings data.";
@@ -241,6 +241,8 @@ function App() {
     Prizes: <PrizesPage />,
     "TV View": <TvLeaderboard state={state} leaderboard={leaderboard} />,
   };
+  const autoSync = state.settings.autoSync;
+  const autoSyncAt = autoSync?.lastSyncedAt ? new Date(autoSync.lastSyncedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : "Pending";
 
   return (
     <div className="app-shell min-h-screen">
@@ -302,6 +304,9 @@ function App() {
               </button>
             ))}
           </nav>
+          <div className="nav-sync-status">
+            Auto Sync: {autoSync?.source || "football-data.org"} / {autoSyncAt}
+          </div>
           </div>
         </div>
       </header>
@@ -824,18 +829,11 @@ function BracketTab({ state, updateState, showToast, canEdit, unlockCurrentView 
     <div className="space-y-5">
       {!canEdit && <EditUnlockPanel label="bracket editing" onUnlock={unlockCurrentView} showToast={showToast} />}
       <section className="panel p-4">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-moon">Bracket View</p>
-            <p className="mt-1 text-sm text-white/60">{groupsHidden ? "Group tables are hidden so the knockout bracket can take focus." : "Group tables are visible above the knockout bracket."}</p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <button className="btn bg-white/10" disabled={groupsHidden} onClick={() => updateState({ settings: { ...state.settings, groupsHidden: true } })}>Hide Groups</button>
-            <button className="btn bg-white/10" disabled={!groupsHidden} onClick={() => updateState({ settings: { ...state.settings, groupsHidden: false } })}>Show Groups</button>
-          </div>
+        <div className="flex flex-wrap gap-3">
+          <button className="btn bg-white/10" disabled={groupsHidden} onClick={() => updateState({ settings: { ...state.settings, groupsHidden: true } })}>Hide Groups</button>
+          <button className="btn bg-white/10" disabled={!groupsHidden} onClick={() => updateState({ settings: { ...state.settings, groupsHidden: false } })}>Show Groups</button>
         </div>
       </section>
-      <AutoSyncPanel autoSync={state.settings.autoSync} />
       {!groupsHidden && (
         <GroupStage
           teams={state.teams}
@@ -865,43 +863,6 @@ function PrizesPage() {
       <div className="prize-artwork-frame">
         <img src="./road-to-glory.png" alt="Moonsport Road to Glory prize and event artwork" />
       </div>
-    </section>
-  );
-}
-
-function AutoSyncPanel({ autoSync }) {
-  if (!autoSync) {
-    return (
-      <section className="sync-panel">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-moon">Auto Sync</p>
-          <p className="mt-1 text-sm text-white/60">No automated football-data sync has been recorded yet.</p>
-        </div>
-      </section>
-    );
-  }
-
-  const totalTeams = Number(autoSync.totalTeams) || 48;
-  const syncedTeams = Number(autoSync.syncedTeams) || 0;
-  const missingTeams = Array.isArray(autoSync.missingAppTeams) ? autoSync.missingAppTeams : [];
-  const unmatchedTeams = Array.isArray(autoSync.unmatchedApiTeams) ? autoSync.unmatchedApiTeams : [];
-  const syncedAt = autoSync.lastSyncedAt ? new Date(autoSync.lastSyncedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : "Unknown";
-  const hasSyncWarning = syncedTeams !== totalTeams || missingTeams.length > 0 || unmatchedTeams.length > 0;
-
-  return (
-    <section className={`sync-panel ${syncedTeams === totalTeams ? "sync-panel-good" : "sync-panel-warning"}`}>
-      <div>
-        <p className="text-xs font-bold uppercase tracking-[0.22em] text-moon">Auto Sync</p>
-        <h3>{autoSync.source || "football-data.org"}</h3>
-        <p>Last synced: {syncedAt}</p>
-      </div>
-      {hasSyncWarning && (
-        <div className="sync-details">
-          <p><strong>Teams synced:</strong> {syncedTeams}/{totalTeams}</p>
-          {missingTeams.length > 0 && <p><strong>Missing app teams:</strong> {missingTeams.join(", ")}</p>}
-          {unmatchedTeams.length > 0 && <p><strong>Unmatched API names:</strong> {unmatchedTeams.join(", ")}</p>}
-        </div>
-      )}
     </section>
   );
 }

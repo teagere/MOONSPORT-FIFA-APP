@@ -429,6 +429,96 @@ textarea {
   }
 }
 
+@media (max-height: 520px) and (orientation: landscape) {
+  .site-header > div {
+    position: relative;
+    min-height: 64px;
+    gap: 10px;
+    padding-block: 10px;
+  }
+
+  .app-title-wrap {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 10px;
+    padding-right: 4px;
+  }
+
+  .app-title-lockup p {
+    font-size: 0.54rem;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+  }
+
+  .app-title-lockup h1 {
+    max-width: 190px;
+    overflow: hidden;
+    font-size: clamp(0.72rem, 2.2vw, 0.9rem);
+    line-height: 1;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .brand-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .header-actions {
+    flex: 0 0 auto;
+    gap: 8px;
+  }
+
+  .cloud-status,
+  .nav-sync-status {
+    display: none;
+  }
+
+  .hamburger-button {
+    display: block;
+  }
+
+  .top-nav {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 4px;
+    z-index: 80;
+    display: none;
+    width: min(300px, calc(100vw - 24px));
+    max-height: min(72vh, 520px);
+    overflow-y: auto;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(5, 8, 14, 0.98);
+    padding: 10px;
+    box-shadow: 0 28px 90px rgba(0, 0, 0, 0.58);
+  }
+
+  .top-nav.is-open {
+    display: grid;
+    gap: 8px;
+  }
+
+  .top-nav .btn,
+  .manager-nav {
+    width: 100%;
+  }
+
+  .top-nav .btn {
+    justify-content: flex-start;
+    padding: 12px 13px;
+  }
+
+  .manager-menu {
+    position: static;
+    min-width: 0;
+    margin-top: 8px;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+}
+
 .panel {
   @apply rounded-md border border-white/10 bg-[#191919]/80 shadow-glow backdrop-blur;
 }
@@ -700,7 +790,7 @@ td {
   position: relative;
   z-index: 1;
   display: flex;
-  width: min(100%, calc((100vh - 142px) * 16 / 9));
+  width: min(100%, calc((100vh - 166px) * 16 / 9));
   max-width: 1280px;
   aspect-ratio: 16 / 9;
   overflow: hidden;
@@ -712,6 +802,10 @@ td {
     radial-gradient(circle at 88% 8%, rgba(244, 248, 68, 0.13), transparent 24%),
     linear-gradient(135deg, rgba(25, 25, 25, 0.92), rgba(0, 0, 0, 0.9));
   box-shadow: 0 34px 100px rgba(0, 0, 0, 0.56);
+}
+
+.tv-frame-dense {
+  width: min(100%, calc((100vh - 184px) * 16 / 9));
 }
 
 .tv-frame::before {
@@ -809,6 +903,12 @@ td {
   gap: 5px;
 }
 
+.tv-frame-dense .tv-column,
+.tv-frame-dense .tv-column-featured {
+  grid-auto-rows: minmax(28px, 1fr);
+  gap: 4px;
+}
+
 .tv-row {
   display: grid;
   grid-template-columns: 27px minmax(0, 1fr) 56px;
@@ -845,6 +945,12 @@ td {
   grid-template-columns: 24px minmax(0, 1fr) 46px;
   min-height: 31px;
   padding: 4px 6px;
+}
+
+.tv-frame-dense .tv-row,
+.tv-frame-dense .tv-column-featured .tv-row {
+  min-height: 28px;
+  padding: 3px 5px;
 }
 
 .tv-column-featured .tv-row-podium {

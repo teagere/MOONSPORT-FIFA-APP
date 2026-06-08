@@ -726,10 +726,11 @@ function TvLeaderboard({ state, leaderboard }) {
   const tvColumnCount = 4;
   const columns = splitIntoColumns(leaderboard, tvColumnCount);
   const compactMode = leaderboard.length > 40;
+  const denseMode = leaderboard.length > 44;
 
   return (
     <section className="tv-stage" aria-label="16 by 9 TV leaderboard display">
-      <div className={`tv-frame ${compactMode ? "tv-frame-compact" : ""}`}>
+      <div className={`tv-frame ${compactMode ? "tv-frame-compact" : ""} ${denseMode ? "tv-frame-dense" : ""}`}>
         <div className="tv-header">
           <div className="tv-metrics">
             <span><strong>Stage:</strong> {state.settings.currentStage}</span>

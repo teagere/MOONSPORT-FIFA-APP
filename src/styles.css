@@ -142,6 +142,11 @@ textarea {
   z-index: 2;
 }
 
+.site-main.site-main-tv {
+  padding-top: 10px;
+  padding-bottom: 12px;
+}
+
 .brand-lockup {
   display: grid;
   min-width: 0;
@@ -776,6 +781,11 @@ td {
   position: relative;
   min-height: calc(100vh - 138px);
   place-items: center;
+}
+
+.site-main-tv .tv-stage {
+  min-height: calc(100vh - 188px);
+  place-items: start center;
 }
 
 .tv-stage::before {

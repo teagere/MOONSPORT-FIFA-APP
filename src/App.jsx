@@ -311,7 +311,7 @@ function App() {
         </div>
       </header>
 
-      <main className="site-main mx-auto max-w-7xl px-4 py-6 md:py-8">
+      <main className={`site-main mx-auto max-w-7xl px-4 py-6 md:py-8 ${activeView === "TV View" ? "site-main-tv" : ""}`}>
         {publicViews.includes(activeView) || canEditActiveView ? (
           viewMap[activeView]
         ) : (

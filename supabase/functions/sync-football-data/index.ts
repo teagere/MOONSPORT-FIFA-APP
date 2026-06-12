@@ -81,6 +81,18 @@ function getSupabaseSecretKey() {
   }
 }
 
+function hasMeaningfulStandingData(standing: Record<string, unknown> = {}) {
+  return [
+    "played",
+    "won",
+    "drawn",
+    "lost",
+    "goalsFor",
+    "goalsAgainst",
+    "points",
+  ].some((field) => Number(standing[field] || 0) !== 0);
+}
+
 Deno.serve(async () => {
   const footballDataToken = Deno.env.get("FOOTBALL_DATA_TOKEN");
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
@@ -141,8 +153,9 @@ Deno.serve(async () => {
         continue;
       }
 
+      const existingStanding = existingByTeamId.get(team.id) || {};
       const nextStanding = {
-        ...(existingByTeamId.get(team.id) || {}),
+        ...existingStanding,
         teamId: team.id,
         group: String(standingGroup.group || team.group || "").replace(/^GROUP_?/i, ""),
         position: Number(row.position) || 0,
@@ -154,6 +167,14 @@ Deno.serve(async () => {
         goalsAgainst: Number(row.goalsAgainst) || 0,
         points: Number(row.points) || 0,
       };
+
+      // football-data.org can lag behind live results and return blank 0-0-0 rows.
+      // Keep manually entered standings when the API row is still empty, so the
+      // scheduled sync cannot wipe the office leaderboard back to zero.
+      if (!hasMeaningfulStandingData(nextStanding) && hasMeaningfulStandingData(existingStanding)) {
+        syncedTeamIds.add(team.id);
+        continue;
+      }
 
       const existingIndex = nextStandings.findIndex((standing: { teamId: string }) => standing.teamId === team.id);
       if (existingIndex >= 0) {

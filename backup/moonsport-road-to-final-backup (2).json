@@ -1,0 +1,1785 @@
+{
+  "settings": {
+    "tournamentName": "Moonsport Road to the Final",
+    "currentStage": "Group Stage",
+    "drawLocked": false,
+    "teamsLocked": true,
+    "liveDrawIndex": 48,
+    "drawPools": {
+      "tier1Pool": [
+        "team-1",
+        "team-33",
+        "team-6",
+        "team-6",
+        "team-9",
+        "team-16",
+        "team-21",
+        "team-41",
+        "team-22",
+        "team-13",
+        "team-25",
+        "team-9",
+        "team-26",
+        "team-21",
+        "team-9",
+        "team-33",
+        "team-33",
+        "team-42",
+        "team-45",
+        "team-34",
+        "team-17",
+        "team-22",
+        "team-22",
+        "team-46",
+        "team-17",
+        "team-45",
+        "team-41",
+        "team-30",
+        "team-16",
+        "team-34",
+        "team-42",
+        "team-9",
+        "team-30",
+        "team-37",
+        "team-26",
+        "team-6",
+        "team-37",
+        "team-1",
+        "team-10",
+        "team-25",
+        "team-41",
+        "team-29",
+        "team-9",
+        "team-46",
+        "team-13",
+        "team-10",
+        "team-16"
+      ],
+      "tier2Pool": [
+        "team-23",
+        "team-31",
+        "team-38",
+        "team-23",
+        "team-44",
+        "team-14",
+        "team-15",
+        "team-8",
+        "team-4",
+        "team-19",
+        "team-28",
+        "team-15",
+        "team-11",
+        "team-24",
+        "team-27",
+        "team-23",
+        "team-18",
+        "team-11",
+        "team-4",
+        "team-32",
+        "team-4",
+        "team-48",
+        "team-19",
+        "team-28",
+        "team-20",
+        "team-5",
+        "team-7",
+        "team-14",
+        "team-35",
+        "team-12",
+        "team-47",
+        "team-11",
+        "team-3",
+        "team-39",
+        "team-2",
+        "team-23",
+        "team-38",
+        "team-14",
+        "team-5",
+        "team-8",
+        "team-2",
+        "team-40",
+        "team-36",
+        "team-43",
+        "team-23",
+        "team-38",
+        "team-18"
+      ]
+    },
+    "groupsHidden": false,
+    "dataVersion": "fifa-official-rankings-2026-05-19-foundation",
+    "staffVersion": "moonsport-staff-2026-06-06",
+    "dataSource": "FIFA World Cup 2026 teams page and FIFA approved men's rankings API",
+    "autoSync": {
+      "source": "football-data.org",
+      "rateLimit": {
+        "reset": "60",
+        "dayAvailable": null,
+        "minuteAvailable": "9"
+      },
+      "totalTeams": 48,
+      "syncedTeams": 48,
+      "lastSyncedAt": "2026-06-25T16:30:09.116Z",
+      "missingAppTeams": [],
+      "unmatchedApiTeams": [],
+      "finishedGroupMatchesSynced": 54
+    }
+  },
+  "staff": [
+    {
+      "id": "staff-1",
+      "name": "Amy Langston",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-45",
+      "tier2TeamId": "team-5"
+    },
+    {
+      "id": "staff-2",
+      "name": "Angus Opperman",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-22",
+      "tier2TeamId": "team-20"
+    },
+    {
+      "id": "staff-3",
+      "name": "Annemie Bester",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-13",
+      "tier2TeamId": "team-2"
+    },
+    {
+      "id": "staff-4",
+      "name": "Bonke Lento",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-41",
+      "tier2TeamId": "team-11"
+    },
+    {
+      "id": "staff-5",
+      "name": "Candice Bresler",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-42",
+      "tier2TeamId": "team-47"
+    },
+    {
+      "id": "staff-6",
+      "name": "Carisa Liebenberg",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-46",
+      "tier2TeamId": "team-40"
+    },
+    {
+      "id": "staff-7",
+      "name": "Carly Dunbar",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-26",
+      "tier2TeamId": "team-40"
+    },
+    {
+      "id": "staff-8",
+      "name": "Catherine Matthews",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-29",
+      "tier2TeamId": "team-7"
+    },
+    {
+      "id": "staff-9",
+      "name": "Chene Caine",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-26",
+      "tier2TeamId": "team-24"
+    },
+    {
+      "id": "staff-10",
+      "name": "Christiaan Coetsee",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-22",
+      "tier2TeamId": "team-39"
+    },
+    {
+      "id": "staff-11",
+      "name": "Codi Rinkwest",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-10",
+      "tier2TeamId": "team-38"
+    },
+    {
+      "id": "staff-12",
+      "name": "David Lim",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-21",
+      "tier2TeamId": "team-2"
+    },
+    {
+      "id": "staff-13",
+      "name": "Dean Petersen",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-29",
+      "tier2TeamId": "team-35"
+    },
+    {
+      "id": "staff-14",
+      "name": "Deon Chetty",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-10",
+      "tier2TeamId": "team-23"
+    },
+    {
+      "id": "staff-15",
+      "name": "Dixie Cornell",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-33",
+      "tier2TeamId": "team-47"
+    },
+    {
+      "id": "staff-16",
+      "name": "Dylan Jack",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-30",
+      "tier2TeamId": "team-28"
+    },
+    {
+      "id": "staff-17",
+      "name": "Jared Epstein",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-41",
+      "tier2TeamId": "team-3"
+    },
+    {
+      "id": "staff-18",
+      "name": "Jason Mitchell",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-25",
+      "tier2TeamId": "team-31"
+    },
+    {
+      "id": "staff-19",
+      "name": "Jeremy Ryall",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-22",
+      "tier2TeamId": "team-32"
+    },
+    {
+      "id": "staff-20",
+      "name": "Jody Taylor",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-46",
+      "tier2TeamId": "team-14"
+    },
+    {
+      "id": "staff-21",
+      "name": "Jonty Mylne",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-37",
+      "tier2TeamId": "team-44"
+    },
+    {
+      "id": "staff-22",
+      "name": "Kristen Brown",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-16",
+      "tier2TeamId": "team-23"
+    },
+    {
+      "id": "staff-23",
+      "name": "Kyle De Vree",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-37",
+      "tier2TeamId": "team-4"
+    },
+    {
+      "id": "staff-24",
+      "name": "Leezil Hendricks",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-1",
+      "tier2TeamId": "team-3"
+    },
+    {
+      "id": "staff-25",
+      "name": "Louis JV Rensburg",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-13",
+      "tier2TeamId": "team-19"
+    },
+    {
+      "id": "staff-26",
+      "name": "Monique Vrey",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-1",
+      "tier2TeamId": "team-27"
+    },
+    {
+      "id": "staff-27",
+      "name": "Myles Hoppe",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-1",
+      "tier2TeamId": "team-27"
+    },
+    {
+      "id": "staff-28",
+      "name": "Nadine Hendricks",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-21",
+      "tier2TeamId": "team-8"
+    },
+    {
+      "id": "staff-29",
+      "name": "Seth O'Dea",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-25",
+      "tier2TeamId": "team-18"
+    },
+    {
+      "id": "staff-30",
+      "name": "Simon Key",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-42",
+      "tier2TeamId": "team-12"
+    },
+    {
+      "id": "staff-31",
+      "name": "Sipumelele Mnikina",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-17",
+      "tier2TeamId": "team-3"
+    },
+    {
+      "id": "staff-32",
+      "name": "Taswald Christian",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-45",
+      "tier2TeamId": "team-8"
+    },
+    {
+      "id": "staff-33",
+      "name": "Teager Eales",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-21",
+      "tier2TeamId": "team-40"
+    },
+    {
+      "id": "staff-34",
+      "name": "Thabiso May",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-6",
+      "tier2TeamId": "team-3"
+    },
+    {
+      "id": "staff-35",
+      "name": "Trent Key",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-34",
+      "tier2TeamId": "team-11"
+    },
+    {
+      "id": "staff-36",
+      "name": "Vuyo Ncube",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-6",
+      "tier2TeamId": "team-2"
+    },
+    {
+      "id": "staff-37",
+      "name": "Warren Fortune",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-17",
+      "tier2TeamId": "team-7"
+    },
+    {
+      "id": "420572bc-5848-4ec6-b71f-16d41a7ea8bd",
+      "name": "Jonathan Bandli",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-33",
+      "tier2TeamId": "team-15"
+    },
+    {
+      "id": "38e7ef79-320b-43c2-a0bf-42bbeb7e1ed4",
+      "name": "Andrew Bosman",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-34",
+      "tier2TeamId": "team-12"
+    },
+    {
+      "id": "48f60d65-a697-4a82-ba81-76635d89c997",
+      "name": "Christoff Snyman",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-30",
+      "tier2TeamId": "team-11"
+    },
+    {
+      "id": "84327d82-003f-40c7-afd9-702514632332",
+      "name": "Kurt April",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-9",
+      "tier2TeamId": "team-36"
+    },
+    {
+      "id": "27b357df-55c0-4f27-84ef-5d8cdc5a46b3",
+      "name": "Hanel Rupping",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-25",
+      "tier2TeamId": "team-48"
+    },
+    {
+      "id": "58e951cf-381f-41d1-a539-baaafb8bd4ab",
+      "name": "Victor Georgiev",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-33",
+      "tier2TeamId": "team-43"
+    },
+    {
+      "id": "61309876-be81-483f-b520-d3743f2f210e",
+      "name": "Keagan MacPherson",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-26",
+      "tier2TeamId": "team-8"
+    },
+    {
+      "id": "559f58c5-9bd7-4fe4-9728-72f4b85a8956",
+      "name": "Paolo VD Merve",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-16",
+      "tier2TeamId": "team-38"
+    },
+    {
+      "id": "d6a184df-f992-44e0-8cc5-9f3fe1e9c74d",
+      "name": "Rameez Dollie",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-9",
+      "tier2TeamId": "team-27"
+    },
+    {
+      "id": "93312655-7f23-46d6-81ab-03663d9e3182",
+      "name": "PJ Robertson",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-45",
+      "tier2TeamId": "team-43"
+    },
+    {
+      "id": "690c5f32-dd77-4716-9591-06ecf1ca1a39",
+      "name": "Virna",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-25",
+      "tier2TeamId": "team-48"
+    },
+    {
+      "id": "e6a30508-c60b-41be-b57a-61c954a8c2d0",
+      "name": "Zikhona",
+      "email": "",
+      "department": "",
+      "tier1TeamId": "team-29",
+      "tier2TeamId": "team-4"
+    }
+  ],
+  "teams": [
+    {
+      "id": "team-38",
+      "flag": "🇩🇿",
+      "tier": 2,
+      "group": "J",
+      "status": "Active",
+      "country": "Algeria",
+      "fifaRanking": 28
+    },
+    {
+      "id": "team-37",
+      "flag": "🇦🇷",
+      "tier": 1,
+      "group": "J",
+      "status": "Active",
+      "country": "Argentina",
+      "fifaRanking": 3
+    },
+    {
+      "id": "team-15",
+      "flag": "🇦🇺",
+      "tier": 2,
+      "group": "D",
+      "status": "Active",
+      "country": "Australia",
+      "fifaRanking": 27
+    },
+    {
+      "id": "team-39",
+      "flag": "🇦🇹",
+      "tier": 2,
+      "group": "J",
+      "status": "Active",
+      "country": "Austria",
+      "fifaRanking": 24
+    },
+    {
+      "id": "team-25",
+      "flag": "🇧🇪",
+      "tier": 1,
+      "group": "G",
+      "status": "Active",
+      "country": "Belgium",
+      "fifaRanking": 9
+    },
+    {
+      "id": "team-8",
+      "flag": "🇧🇦",
+      "tier": 2,
+      "group": "B",
+      "status": "Active",
+      "country": "Bosnia & Herzegovina",
+      "fifaRanking": 65
+    },
+    {
+      "id": "team-9",
+      "flag": "🇧🇷",
+      "tier": 1,
+      "group": "C",
+      "status": "Active",
+      "country": "Brazil",
+      "fifaRanking": 6
+    },
+    {
+      "id": "team-5",
+      "flag": "🇨🇦",
+      "tier": 2,
+      "group": "B",
+      "status": "Active",
+      "country": "Canada",
+      "fifaRanking": 30
+    },
+    {
+      "id": "team-32",
+      "flag": "🇨🇻",
+      "tier": 2,
+      "group": "H",
+      "status": "Active",
+      "country": "Cape Verde",
+      "fifaRanking": 69
+    },
+    {
+      "id": "team-42",
+      "flag": "🇨🇴",
+      "tier": 1,
+      "group": "K",
+      "status": "Active",
+      "country": "Colombia",
+      "fifaRanking": 13
+    },
+    {
+      "id": "team-46",
+      "flag": "🇭🇷",
+      "tier": 1,
+      "group": "L",
+      "status": "Active",
+      "country": "Croatia",
+      "fifaRanking": 11
+    },
+    {
+      "id": "team-20",
+      "flag": "🇨🇼",
+      "tier": 2,
+      "group": "E",
+      "status": "Active",
+      "country": "Curacao",
+      "fifaRanking": 82
+    },
+    {
+      "id": "team-4",
+      "flag": "🇨🇿",
+      "tier": 2,
+      "group": "A",
+      "status": "Active",
+      "country": "Czech Republic",
+      "fifaRanking": 41
+    },
+    {
+      "id": "team-44",
+      "flag": "🇨🇩",
+      "tier": 2,
+      "group": "K",
+      "status": "Active",
+      "country": "DR Congo",
+      "fifaRanking": 46
+    },
+    {
+      "id": "team-18",
+      "flag": "🇪🇨",
+      "tier": 2,
+      "group": "E",
+      "status": "Active",
+      "country": "Ecuador",
+      "fifaRanking": 23
+    },
+    {
+      "id": "team-27",
+      "flag": "🇪🇬",
+      "tier": 2,
+      "group": "G",
+      "status": "Active",
+      "country": "Egypt",
+      "fifaRanking": 29
+    },
+    {
+      "id": "team-45",
+      "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "tier": 1,
+      "group": "L",
+      "status": "Active",
+      "country": "England",
+      "fifaRanking": 4
+    },
+    {
+      "id": "team-33",
+      "flag": "🇫🇷",
+      "tier": 1,
+      "group": "I",
+      "status": "Active",
+      "country": "France",
+      "fifaRanking": 1
+    },
+    {
+      "id": "team-17",
+      "flag": "🇩🇪",
+      "tier": 1,
+      "group": "E",
+      "status": "Active",
+      "country": "Germany",
+      "fifaRanking": 10
+    },
+    {
+      "id": "team-47",
+      "flag": "🇬🇭",
+      "tier": 2,
+      "group": "L",
+      "status": "Active",
+      "country": "Ghana",
+      "fifaRanking": 74
+    },
+    {
+      "id": "team-12",
+      "flag": "🇭🇹",
+      "tier": 2,
+      "group": "C",
+      "status": "Active",
+      "country": "Haiti",
+      "fifaRanking": 83
+    },
+    {
+      "id": "team-26",
+      "flag": "🇮🇷",
+      "tier": 1,
+      "group": "G",
+      "status": "Active",
+      "country": "Iran",
+      "fifaRanking": 21
+    },
+    {
+      "id": "team-36",
+      "flag": "🇮🇶",
+      "tier": 2,
+      "group": "I",
+      "status": "Active",
+      "country": "Iraq",
+      "fifaRanking": 57
+    },
+    {
+      "id": "team-19",
+      "flag": "🇨🇮",
+      "tier": 2,
+      "group": "E",
+      "status": "Active",
+      "country": "Ivory Coast",
+      "fifaRanking": 34
+    },
+    {
+      "id": "team-22",
+      "flag": "🇯🇵",
+      "tier": 1,
+      "group": "F",
+      "status": "Active",
+      "country": "Japan",
+      "fifaRanking": 18
+    },
+    {
+      "id": "team-40",
+      "flag": "🇯🇴",
+      "tier": 2,
+      "group": "J",
+      "status": "Active",
+      "country": "Jordan",
+      "fifaRanking": 63
+    },
+    {
+      "id": "team-1",
+      "flag": "🇲🇽",
+      "tier": 1,
+      "group": "A",
+      "status": "Active",
+      "country": "Mexico",
+      "fifaRanking": 15
+    },
+    {
+      "id": "team-10",
+      "flag": "🇲🇦",
+      "tier": 1,
+      "group": "C",
+      "status": "Active",
+      "country": "Morocco",
+      "fifaRanking": 8
+    },
+    {
+      "id": "team-21",
+      "flag": "🇳🇱",
+      "tier": 1,
+      "group": "F",
+      "status": "Active",
+      "country": "Netherlands",
+      "fifaRanking": 7
+    },
+    {
+      "id": "team-28",
+      "flag": "🇳🇿",
+      "tier": 2,
+      "group": "G",
+      "status": "Active",
+      "country": "New Zealand",
+      "fifaRanking": 85
+    },
+    {
+      "id": "team-35",
+      "flag": "🇳🇴",
+      "tier": 2,
+      "group": "I",
+      "status": "Active",
+      "country": "Norway",
+      "fifaRanking": 31
+    },
+    {
+      "id": "team-48",
+      "flag": "🇵🇦",
+      "tier": 2,
+      "group": "L",
+      "status": "Active",
+      "country": "Panama",
+      "fifaRanking": 33
+    },
+    {
+      "id": "team-14",
+      "flag": "🇵🇾",
+      "tier": 2,
+      "group": "D",
+      "status": "Active",
+      "country": "Paraguay",
+      "fifaRanking": 40
+    },
+    {
+      "id": "team-41",
+      "flag": "🇵🇹",
+      "tier": 1,
+      "group": "K",
+      "status": "Active",
+      "country": "Portugal",
+      "fifaRanking": 5
+    },
+    {
+      "id": "team-7",
+      "flag": "🇶🇦",
+      "tier": 2,
+      "group": "B",
+      "status": "Active",
+      "country": "Qatar",
+      "fifaRanking": 55
+    },
+    {
+      "id": "team-31",
+      "flag": "🇸🇦",
+      "tier": 2,
+      "group": "H",
+      "status": "Active",
+      "country": "Saudi Arabia",
+      "fifaRanking": 61
+    },
+    {
+      "id": "team-11",
+      "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "tier": 2,
+      "group": "C",
+      "status": "Active",
+      "country": "Scotland",
+      "fifaRanking": 43
+    },
+    {
+      "id": "team-34",
+      "flag": "🇸🇳",
+      "tier": 1,
+      "group": "I",
+      "status": "Active",
+      "country": "Senegal",
+      "fifaRanking": 14
+    },
+    {
+      "id": "team-3",
+      "flag": "🇿🇦",
+      "tier": 2,
+      "group": "A",
+      "status": "Active",
+      "country": "South Africa",
+      "fifaRanking": 60
+    },
+    {
+      "id": "team-2",
+      "flag": "🇰🇷",
+      "tier": 2,
+      "group": "A",
+      "status": "Active",
+      "country": "South Korea",
+      "fifaRanking": 25
+    },
+    {
+      "id": "team-29",
+      "flag": "🇪🇸",
+      "tier": 1,
+      "group": "H",
+      "status": "Active",
+      "country": "Spain",
+      "fifaRanking": 2
+    },
+    {
+      "id": "team-24",
+      "flag": "🇸🇪",
+      "tier": 2,
+      "group": "F",
+      "status": "Active",
+      "country": "Sweden",
+      "fifaRanking": 38
+    },
+    {
+      "id": "team-6",
+      "flag": "🇨🇭",
+      "tier": 1,
+      "group": "B",
+      "status": "Active",
+      "country": "Switzerland",
+      "fifaRanking": 19
+    },
+    {
+      "id": "team-23",
+      "flag": "🇹🇳",
+      "tier": 2,
+      "group": "F",
+      "status": "Active",
+      "country": "Tunisia",
+      "fifaRanking": 44
+    },
+    {
+      "id": "team-16",
+      "flag": "🇹🇷",
+      "tier": 1,
+      "group": "D",
+      "status": "Active",
+      "country": "Turkiye",
+      "fifaRanking": 22
+    },
+    {
+      "id": "team-30",
+      "flag": "🇺🇾",
+      "tier": 1,
+      "group": "H",
+      "status": "Active",
+      "country": "Uruguay",
+      "fifaRanking": 17
+    },
+    {
+      "id": "team-13",
+      "flag": "🇺🇸",
+      "tier": 1,
+      "group": "D",
+      "status": "Active",
+      "country": "USA",
+      "fifaRanking": 16
+    },
+    {
+      "id": "team-43",
+      "flag": "🇺🇿",
+      "tier": 2,
+      "group": "K",
+      "status": "Active",
+      "country": "Uzbekistan",
+      "fifaRanking": 50
+    }
+  ],
+  "prizes": [
+    {
+      "id": "grand-prize",
+      "name": "Grand Prize",
+      "description": "Person or people with the World Cup-winning team."
+    },
+    {
+      "id": "runner-up",
+      "name": "Runner-up Prize",
+      "description": "Person or people with the losing finalist."
+    },
+    {
+      "id": "best-tier-2",
+      "name": "Best Tier 2 Run",
+      "description": "Person or people with the furthest progressing Tier 2 team."
+    },
+    {
+      "id": "most-points",
+      "name": "Most Points",
+      "description": "Top leaderboard points."
+    },
+    {
+      "id": "spirit-prize",
+      "name": "Moonsport Spirit Prize",
+      "description": "Manual award."
+    },
+    {
+      "id": "wooden-spoon",
+      "name": "Wooden Spoon",
+      "description": "First person with both teams knocked out."
+    }
+  ],
+  "recentEliminations": [],
+  "groupStandings": [
+    {
+      "teamId": "team-38",
+      "group": "J",
+      "position": 3,
+      "played": 2,
+      "won": 1,
+      "drawn": 0,
+      "lost": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 4,
+      "points": 3
+    },
+    {
+      "teamId": "team-37",
+      "group": "J",
+      "position": 1,
+      "played": 2,
+      "won": 2,
+      "drawn": 0,
+      "lost": 0,
+      "goalsFor": 5,
+      "goalsAgainst": 0,
+      "points": 6
+    },
+    {
+      "teamId": "team-15",
+      "group": "D",
+      "position": 2,
+      "played": 2,
+      "won": 1,
+      "drawn": 0,
+      "lost": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 2,
+      "points": 3
+    },
+    {
+      "teamId": "team-39",
+      "group": "J",
+      "position": 2,
+      "played": 2,
+      "won": 1,
+      "drawn": 0,
+      "lost": 1,
+      "goalsFor": 3,
+      "goalsAgainst": 3,
+      "points": 3
+    },
+    {
+      "teamId": "team-25",
+      "group": "G",
+      "position": 3,
+      "played": 2,
+      "won": 0,
+      "drawn": 2,
+      "lost": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 1,
+      "points": 2
+    },
+    {
+      "teamId": "team-8",
+      "group": "B",
+      "position": 3,
+      "played": 3,
+      "won": 1,
+      "drawn": 1,
+      "lost": 1,
+      "goalsFor": 5,
+      "goalsAgainst": 6,
+      "points": 4
+    },
+    {
+      "teamId": "team-9",
+      "group": "C",
+      "position": 1,
+      "played": 3,
+      "won": 2,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 7,
+      "goalsAgainst": 1,
+      "points": 7
+    },
+    {
+      "teamId": "team-5",
+      "group": "B",
+      "position": 2,
+      "played": 3,
+      "won": 1,
+      "drawn": 1,
+      "lost": 1,
+      "goalsFor": 8,
+      "goalsAgainst": 3,
+      "points": 4
+    },
+    {
+      "teamId": "team-32",
+      "group": "H",
+      "position": 3,
+      "played": 2,
+      "won": 0,
+      "drawn": 2,
+      "lost": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 2,
+      "points": 2
+    },
+    {
+      "teamId": "team-42",
+      "group": "K",
+      "position": 1,
+      "played": 2,
+      "won": 2,
+      "drawn": 0,
+      "lost": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 1,
+      "points": 6
+    },
+    {
+      "teamId": "team-46",
+      "group": "L",
+      "position": 3,
+      "played": 2,
+      "won": 1,
+      "drawn": 0,
+      "lost": 1,
+      "goalsFor": 3,
+      "goalsAgainst": 4,
+      "points": 3
+    },
+    {
+      "teamId": "team-20",
+      "group": "E",
+      "position": 4,
+      "played": 2,
+      "won": 0,
+      "drawn": 1,
+      "lost": 1,
+      "goalsFor": 1,
+      "goalsAgainst": 7,
+      "points": 1
+    },
+    {
+      "teamId": "team-4",
+      "group": "A",
+      "position": 4,
+      "played": 3,
+      "won": 0,
+      "drawn": 1,
+      "lost": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 6,
+      "points": 1
+    },
+    {
+      "teamId": "team-44",
+      "group": "K",
+      "position": 3,
+      "played": 2,
+      "won": 0,
+      "drawn": 1,
+      "lost": 1,
+      "goalsFor": 1,
+      "goalsAgainst": 2,
+      "points": 1
+    },
+    {
+      "teamId": "team-18",
+      "group": "E",
+      "position": 3,
+      "played": 2,
+      "won": 0,
+      "drawn": 1,
+      "lost": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 1,
+      "points": 1
+    },
+    {
+      "teamId": "team-27",
+      "group": "G",
+      "position": 1,
+      "played": 2,
+      "won": 1,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 2,
+      "points": 4
+    },
+    {
+      "teamId": "team-45",
+      "group": "L",
+      "position": 1,
+      "played": 2,
+      "won": 1,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 2,
+      "points": 4
+    },
+    {
+      "teamId": "team-33",
+      "group": "I",
+      "position": 1,
+      "played": 2,
+      "won": 2,
+      "drawn": 0,
+      "lost": 0,
+      "goalsFor": 6,
+      "goalsAgainst": 1,
+      "points": 6
+    },
+    {
+      "teamId": "team-17",
+      "group": "E",
+      "position": 1,
+      "played": 2,
+      "won": 2,
+      "drawn": 0,
+      "lost": 0,
+      "goalsFor": 9,
+      "goalsAgainst": 2,
+      "points": 6
+    },
+    {
+      "teamId": "team-47",
+      "group": "L",
+      "position": 2,
+      "played": 2,
+      "won": 1,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 0,
+      "points": 4
+    },
+    {
+      "teamId": "team-12",
+      "group": "C",
+      "position": 4,
+      "played": 3,
+      "won": 0,
+      "drawn": 0,
+      "lost": 3,
+      "goalsFor": 2,
+      "goalsAgainst": 8,
+      "points": 0
+    },
+    {
+      "teamId": "team-26",
+      "group": "G",
+      "position": 2,
+      "played": 2,
+      "won": 0,
+      "drawn": 2,
+      "lost": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 2,
+      "points": 2
+    },
+    {
+      "teamId": "team-36",
+      "group": "I",
+      "position": 4,
+      "played": 2,
+      "won": 0,
+      "drawn": 0,
+      "lost": 2,
+      "goalsFor": 1,
+      "goalsAgainst": 7,
+      "points": 0
+    },
+    {
+      "teamId": "team-19",
+      "group": "E",
+      "position": 2,
+      "played": 2,
+      "won": 1,
+      "drawn": 0,
+      "lost": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 2,
+      "points": 3
+    },
+    {
+      "teamId": "team-22",
+      "group": "F",
+      "position": 2,
+      "played": 2,
+      "won": 1,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 6,
+      "goalsAgainst": 2,
+      "points": 4
+    },
+    {
+      "teamId": "team-40",
+      "group": "J",
+      "position": 4,
+      "played": 2,
+      "won": 0,
+      "drawn": 0,
+      "lost": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 5,
+      "points": 0
+    },
+    {
+      "teamId": "team-1",
+      "group": "A",
+      "position": 1,
+      "played": 3,
+      "won": 3,
+      "drawn": 0,
+      "lost": 0,
+      "goalsFor": 6,
+      "goalsAgainst": 0,
+      "points": 9
+    },
+    {
+      "teamId": "team-10",
+      "group": "C",
+      "position": 2,
+      "played": 3,
+      "won": 2,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 6,
+      "goalsAgainst": 3,
+      "points": 7
+    },
+    {
+      "teamId": "team-21",
+      "group": "F",
+      "position": 1,
+      "played": 2,
+      "won": 1,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 7,
+      "goalsAgainst": 3,
+      "points": 4
+    },
+    {
+      "teamId": "team-28",
+      "group": "G",
+      "position": 4,
+      "played": 2,
+      "won": 0,
+      "drawn": 1,
+      "lost": 1,
+      "goalsFor": 3,
+      "goalsAgainst": 5,
+      "points": 1
+    },
+    {
+      "teamId": "team-35",
+      "group": "I",
+      "position": 2,
+      "played": 2,
+      "won": 2,
+      "drawn": 0,
+      "lost": 0,
+      "goalsFor": 7,
+      "goalsAgainst": 3,
+      "points": 6
+    },
+    {
+      "teamId": "team-48",
+      "group": "L",
+      "position": 4,
+      "played": 2,
+      "won": 0,
+      "drawn": 0,
+      "lost": 2,
+      "goalsFor": 0,
+      "goalsAgainst": 2,
+      "points": 0
+    },
+    {
+      "teamId": "team-14",
+      "group": "D",
+      "position": 3,
+      "played": 2,
+      "won": 1,
+      "drawn": 0,
+      "lost": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 4,
+      "points": 3
+    },
+    {
+      "teamId": "team-41",
+      "group": "K",
+      "position": 2,
+      "played": 2,
+      "won": 1,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 6,
+      "goalsAgainst": 1,
+      "points": 4
+    },
+    {
+      "teamId": "team-7",
+      "group": "B",
+      "position": 4,
+      "played": 3,
+      "won": 0,
+      "drawn": 1,
+      "lost": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 10,
+      "points": 1
+    },
+    {
+      "teamId": "team-31",
+      "group": "H",
+      "position": 4,
+      "played": 2,
+      "won": 0,
+      "drawn": 1,
+      "lost": 1,
+      "goalsFor": 1,
+      "goalsAgainst": 5,
+      "points": 1
+    },
+    {
+      "teamId": "team-11",
+      "group": "C",
+      "position": 3,
+      "played": 3,
+      "won": 1,
+      "drawn": 0,
+      "lost": 2,
+      "goalsFor": 1,
+      "goalsAgainst": 4,
+      "points": 3
+    },
+    {
+      "teamId": "team-34",
+      "group": "I",
+      "position": 3,
+      "played": 2,
+      "won": 0,
+      "drawn": 0,
+      "lost": 2,
+      "goalsFor": 3,
+      "goalsAgainst": 6,
+      "points": 0
+    },
+    {
+      "teamId": "team-3",
+      "group": "A",
+      "position": 2,
+      "played": 3,
+      "won": 1,
+      "drawn": 1,
+      "lost": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "points": 4
+    },
+    {
+      "teamId": "team-2",
+      "group": "A",
+      "position": 3,
+      "played": 3,
+      "won": 1,
+      "drawn": 0,
+      "lost": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "points": 3
+    },
+    {
+      "teamId": "team-29",
+      "group": "H",
+      "position": 1,
+      "played": 2,
+      "won": 1,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 0,
+      "points": 4
+    },
+    {
+      "teamId": "team-24",
+      "group": "F",
+      "position": 3,
+      "played": 2,
+      "won": 1,
+      "drawn": 0,
+      "lost": 1,
+      "goalsFor": 6,
+      "goalsAgainst": 6,
+      "points": 3
+    },
+    {
+      "teamId": "team-6",
+      "group": "B",
+      "position": 1,
+      "played": 3,
+      "won": 2,
+      "drawn": 1,
+      "lost": 0,
+      "goalsFor": 7,
+      "goalsAgainst": 3,
+      "points": 7
+    },
+    {
+      "teamId": "team-23",
+      "group": "F",
+      "position": 4,
+      "played": 2,
+      "won": 0,
+      "drawn": 0,
+      "lost": 2,
+      "goalsFor": 1,
+      "goalsAgainst": 9,
+      "points": 0
+    },
+    {
+      "teamId": "team-16",
+      "group": "D",
+      "position": 4,
+      "played": 2,
+      "won": 0,
+      "drawn": 0,
+      "lost": 2,
+      "goalsFor": 0,
+      "goalsAgainst": 3,
+      "points": 0
+    },
+    {
+      "teamId": "team-30",
+      "group": "H",
+      "position": 2,
+      "played": 2,
+      "won": 0,
+      "drawn": 2,
+      "lost": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 3,
+      "points": 2
+    },
+    {
+      "teamId": "team-13",
+      "group": "D",
+      "position": 1,
+      "played": 2,
+      "won": 2,
+      "drawn": 0,
+      "lost": 0,
+      "goalsFor": 6,
+      "goalsAgainst": 1,
+      "points": 6
+    },
+    {
+      "teamId": "team-43",
+      "group": "K",
+      "position": 4,
+      "played": 2,
+      "won": 0,
+      "drawn": 0,
+      "lost": 2,
+      "goalsFor": 1,
+      "goalsAgainst": 8,
+      "points": 0
+    }
+  ],
+  "bracket": [
+    {
+      "name": "Round of 32",
+      "matches": [
+        {
+          "id": "round-of-32-1",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-2",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-3",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-4",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-5",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-6",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-7",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-8",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-9",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-10",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-11",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-12",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-13",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-14",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-15",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-32-16",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        }
+      ]
+    },
+    {
+      "name": "Round of 16",
+      "matches": [
+        {
+          "id": "round-of-16-1",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-16-2",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-16-3",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-16-4",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-16-5",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-16-6",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-16-7",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "round-of-16-8",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        }
+      ]
+    },
+    {
+      "name": "Quarter-finals",
+      "matches": [
+        {
+          "id": "quarter-finals-1",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "quarter-finals-2",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "quarter-finals-3",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "quarter-finals-4",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        }
+      ]
+    },
+    {
+      "name": "Semi-finals",
+      "matches": [
+        {
+          "id": "semi-finals-1",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        },
+        {
+          "id": "semi-finals-2",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        }
+      ]
+    },
+    {
+      "name": "Final",
+      "matches": [
+        {
+          "id": "final-1",
+          "teamAId": "",
+          "teamBId": "",
+          "winnerId": ""
+        }
+      ]
+    }
+  ],
+  "bracketThirdPlace": {
+    "id": "third-place-playoff",
+    "teamAId": "",
+    "teamBId": "",
+    "winnerId": ""
+  }
+}

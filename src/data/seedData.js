@@ -21,13 +21,20 @@ export const TEAM_STATUSES = [
   "Champion",
 ];
 
-const bracketRounds = ["Round of 32", "Round of 16", "Quarter-finals", "Semi-finals", "Final"];
+const bracketRounds = [
+  { name: "Round of 32", matchNumbers: [74, 77, 73, 75, 83, 84, 81, 82, 76, 78, 79, 80, 86, 88, 85, 87] },
+  { name: "Round of 16", matchNumbers: [89, 90, 93, 94, 91, 92, 95, 96] },
+  { name: "Quarter-finals", matchNumbers: [97, 98, 99, 100] },
+  { name: "Semi-finals", matchNumbers: [101, 102] },
+  { name: "Final", matchNumbers: [104] },
+];
 
 export function createDefaultBracket() {
-  return bracketRounds.map((name, roundIndex) => ({
+  return bracketRounds.map(({ name, matchNumbers }) => ({
     name,
-    matches: Array.from({ length: Math.max(1, 16 / 2 ** roundIndex) }, (_, matchIndex) => ({
-      id: `${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${matchIndex + 1}`,
+    matches: matchNumbers.map((matchNumber) => ({
+      id: `match-${matchNumber}`,
+      matchNumber,
       teamAId: "",
       teamBId: "",
       winnerId: "",
@@ -37,7 +44,8 @@ export function createDefaultBracket() {
 
 export function createDefaultThirdPlaceMatch() {
   return {
-    id: "third-place-playoff",
+    id: "match-103",
+    matchNumber: 103,
     teamAId: "",
     teamBId: "",
     winnerId: "",

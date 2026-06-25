@@ -37,6 +37,38 @@ function restoreOfficialTeams(existingTeams = []) {
   );
 }
 
+function normalizeBracket(savedRounds = []) {
+  const template = createDefaultBracket();
+  const savedByMatchNumber = new Map();
+
+  savedRounds.forEach((round, roundIndex) => {
+    (round.matches || []).forEach((match, matchIndex) => {
+      const matchNumber = Number(match.matchNumber) || template[roundIndex]?.matches?.[matchIndex]?.matchNumber;
+      if (!matchNumber) return;
+      savedByMatchNumber.set(matchNumber, match);
+    });
+  });
+
+  return template.map((round) => ({
+    ...round,
+    matches: round.matches.map((templateMatch) => ({
+      ...templateMatch,
+      ...(savedByMatchNumber.get(templateMatch.matchNumber) || {}),
+      id: templateMatch.id,
+      matchNumber: templateMatch.matchNumber,
+    })),
+  }));
+}
+
+function normalizeThirdPlaceMatch(savedMatch) {
+  return {
+    ...createDefaultThirdPlaceMatch(),
+    ...(savedMatch || {}),
+    id: "match-103",
+    matchNumber: 103,
+  };
+}
+
 function normalizeState(input) {
   const stored = input || seedState;
   const shouldRestoreTeams = stored.settings?.dataVersion !== DATA_VERSION || stored.teams?.length !== 48;
@@ -57,8 +89,8 @@ function normalizeState(input) {
     teams,
     staff,
     groupStandings,
-    bracket: stored.bracket?.length ? stored.bracket : createDefaultBracket(),
-    bracketThirdPlace: stored.bracketThirdPlace || createDefaultThirdPlaceMatch(),
+    bracket: normalizeBracket(stored.bracket),
+    bracketThirdPlace: normalizeThirdPlaceMatch(stored.bracketThirdPlace),
     settings: {
       ...seedState.settings,
       ...stored.settings,
@@ -1255,7 +1287,33 @@ const round32Placeholders = [
   ["1K", "3DEIJL"],
 ];
 
-const matchNumberStart = [73, 89, 97, 101, 104];
+const bracketFeeders = {
+  89: [74, 77],
+  90: [73, 75],
+  91: [76, 78],
+  92: [79, 80],
+  93: [83, 84],
+  94: [81, 82],
+  95: [86, 88],
+  96: [85, 87],
+  97: [89, 90],
+  98: [93, 94],
+  99: [91, 92],
+  100: [95, 96],
+  101: [97, 98],
+  102: [99, 100],
+  104: [101, 102],
+};
+
+const bracketDestinations = Object.entries(bracketFeeders).reduce((destinations, [targetMatchNumber, sourceMatchNumbers]) => {
+  sourceMatchNumbers.forEach((sourceMatchNumber, slotIndex) => {
+    destinations[sourceMatchNumber] = {
+      targetMatchNumber: Number(targetMatchNumber),
+      targetField: slotIndex === 0 ? "teamAId" : "teamBId",
+    };
+  });
+  return destinations;
+}, {});
 
 function Bracket({ rounds, thirdPlaceMatch, teams, standings, canEdit, onChange, onThirdPlaceChange, presentation = false }) {
   const bracketRounds = rounds?.length ? rounds : createDefaultBracket();
@@ -1394,12 +1452,12 @@ function BracketColumn({ title, roundIndex, matches, startIndex, teams, canEdit,
             <BracketMatch
               key={match.id}
               match={match}
-              matchNumber={matchNumberStart[roundIndex] + matchIndex}
+              matchNumber={match.matchNumber}
               roundIndex={roundIndex}
               matchIndex={matchIndex}
               teams={teams}
-              placeholderA={getBracketPlaceholder(roundIndex, matchIndex, 0)}
-              placeholderB={getBracketPlaceholder(roundIndex, matchIndex, 1)}
+              placeholderA={getBracketPlaceholder(roundIndex, match.matchNumber, matchIndex, 0)}
+              placeholderB={getBracketPlaceholder(roundIndex, match.matchNumber, matchIndex, 1)}
               canEdit={canEdit}
               onUpdate={onUpdate}
             />
@@ -1507,12 +1565,14 @@ function sortStandingsForQualification(a, b) {
 function cascadeBracketWinner(rounds, roundIndex, matchIndex, field, value) {
   if (field !== "winnerId" || roundIndex >= 4) return rounds;
   const next = rounds.map((round) => ({ ...round, matches: round.matches.map((match) => ({ ...match })) }));
+  const sourceMatch = next[roundIndex]?.matches?.[matchIndex];
+  const destination = bracketDestinations[sourceMatch?.matchNumber];
+  if (!destination) return next;
+
   const nextRoundIndex = roundIndex + 1;
-  const nextMatchIndex = Math.floor(matchIndex / 2);
-  const nextField = matchIndex % 2 === 0 ? "teamAId" : "teamBId";
-  const nextMatch = next[nextRoundIndex]?.matches?.[nextMatchIndex];
+  const nextMatch = next[nextRoundIndex]?.matches?.find((match) => match.matchNumber === destination.targetMatchNumber);
   if (nextMatch) {
-    nextMatch[nextField] = value;
+    nextMatch[destination.targetField] = value;
     if (nextMatch.winnerId && nextMatch.winnerId !== nextMatch.teamAId && nextMatch.winnerId !== nextMatch.teamBId) {
       nextMatch.winnerId = "";
     }
@@ -1520,10 +1580,10 @@ function cascadeBracketWinner(rounds, roundIndex, matchIndex, field, value) {
   return next;
 }
 
-function getBracketPlaceholder(roundIndex, matchIndex, slotIndex) {
+function getBracketPlaceholder(roundIndex, matchNumber, matchIndex, slotIndex) {
   if (roundIndex === 0) return round32Placeholders[matchIndex]?.[slotIndex] || "TBC";
-  const previousStart = matchNumberStart[roundIndex - 1];
-  return `W${previousStart + matchIndex * 2 + slotIndex}`;
+  const feederMatchNumber = bracketFeeders[matchNumber]?.[slotIndex];
+  return feederMatchNumber ? `W${feederMatchNumber}` : "TBC";
 }
 
 function EmptyPanel({ title, body }) {

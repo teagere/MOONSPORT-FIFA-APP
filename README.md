@@ -29,8 +29,8 @@ Pool generation:
 ## Scoring
 
 - Total points include both assigned teams' group-stage table points.
-- Knockout progress adds: Round of 32 = 5, Round of 16 = 10, Quarter-final = 20, Semi-final = 35, Finalist = 50, Champion = 100.
-- Tier 2 bonus: +10 for reaching the knockouts and +20 for reaching the quarter-final or better.
+- Knockout scoring is awarded per win and progression: Tier 1 teams earn 3 points per knockout win, while Tier 2 teams earn 6 points per knockout win.
+- Reaching the Round of 32 does not add points by itself. Progressing to the Round of 16, Quarter-final, Semi-final, Final, and Champion each represents one knockout win.
 
 ## Important Data Note
 

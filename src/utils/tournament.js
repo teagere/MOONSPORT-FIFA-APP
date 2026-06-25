@@ -1,13 +1,17 @@
-export const statusPoints = {
+export const knockoutWinsByStatus = {
   Active: 0,
   "Knocked out": 0,
-  "Round of 32": 5,
-  "Round of 16": 10,
-  "Quarter-final": 20,
-  "Semi-final": 35,
-  Finalist: 50,
-  Champion: 100,
+  "Round of 32": 0,
+  "Round of 16": 1,
+  "Quarter-final": 2,
+  "Semi-final": 3,
+  Finalist: 4,
+  Champion: 5,
 };
+
+export function getKnockoutWinsForStatus(status) {
+  return knockoutWinsByStatus[status] || 0;
+}
 
 export const statusProgress = {
   "Knocked out": 0,
@@ -108,15 +112,23 @@ export function calculatePersonStatus(person, teams) {
   return "Knocked Out";
 }
 
+export function calculateTeamKnockoutPoints(team) {
+  if (!team) return 0;
+  const pointsPerWin = Number(team.tier) === 2 ? 6 : 3;
+  const knockoutWins = Math.max(
+    Number(team.knockoutWins) || 0,
+    getKnockoutWinsForStatus(team.status)
+  );
+  return knockoutWins * pointsPerWin;
+}
+
 export function calculatePoints(person, teams, groupStandings = []) {
   const team1 = getTeam(person.tier1TeamId, teams);
   const team2 = getTeam(person.tier2TeamId, teams);
   const groupPointsByTeam = new Map(groupStandings.map((standing) => [standing.teamId, Number(standing.points) || 0]));
   const groupStagePoints = (groupPointsByTeam.get(team1?.id) || 0) + (groupPointsByTeam.get(team2?.id) || 0);
-  const knockoutPoints = (statusPoints[team1?.status] || 0) + (statusPoints[team2?.status] || 0);
-  const tier2KnockoutBonus = statusProgress[team2?.status] >= statusProgress["Round of 32"] ? 10 : 0;
-  const tier2QuarterBonus = statusProgress[team2?.status] >= statusProgress["Quarter-final"] ? 20 : 0;
-  return groupStagePoints + knockoutPoints + tier2KnockoutBonus + tier2QuarterBonus;
+  const knockoutPoints = calculateTeamKnockoutPoints(team1) + calculateTeamKnockoutPoints(team2);
+  return groupStagePoints + knockoutPoints;
 }
 
 export function buildLeaderboard(staff, teams, groupStandings = []) {

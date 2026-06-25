@@ -3,13 +3,14 @@ import { createDefaultBracket, createDefaultGroupStandings, createDefaultThirdPl
 import {
   buildLeaderboard,
   calculatePersonStatus,
+  calculateTeamKnockoutPoints,
   downloadFile,
   exportJson,
   generateDrawPools,
+  getKnockoutWinsForStatus,
   getTeam,
   getTeamsByTier,
   recalculateTiers,
-  statusPoints,
   statusProgress,
 } from "./utils/tournament.js";
 import { fetchCloudState, isCloudSyncConfigured, saveCloudState } from "./utils/cloudSync.js";
@@ -33,6 +34,7 @@ function restoreOfficialTeams(existingTeams = []) {
     seedState.teams.map((seedTeam) => ({
       ...seedTeam,
       status: existingById.get(seedTeam.id)?.status || seedTeam.status,
+      knockoutWins: Number(existingById.get(seedTeam.id)?.knockoutWins) || 0,
     }))
   );
 }
@@ -528,14 +530,24 @@ function Teams({ state, updateState, showToast, tier1, tier2, validTeamList }) {
   function updateTeam(id, field, value) {
     updateState({
       teams: recalculateTiers(
-        state.teams.map((team) => (team.id === id ? { ...team, [field]: field === "fifaRanking" ? Number(value) : value } : team))
+        state.teams.map((team) => {
+          if (team.id !== id) return team;
+          const nextTeam = { ...team, [field]: field === "fifaRanking" ? Number(value) : value };
+          if (field === "status") {
+            nextTeam.knockoutWins = Math.max(
+              Number(team.knockoutWins) || 0,
+              getKnockoutWinsForStatus(value)
+            );
+          }
+          return nextTeam;
+        })
       ),
     });
   }
 
   function resetTeamStatuses() {
     updateState({
-      teams: state.teams.map((team) => ({ ...team, status: "Active" })),
+      teams: state.teams.map((team) => ({ ...team, status: "Active", knockoutWins: 0 })),
     });
     showToast("Team statuses reset");
   }
@@ -841,22 +853,17 @@ function getPointsBreakdown(row, groupStandings = []) {
   const groupPointsByTeam = new Map(groupStandings.map((standing) => [standing.teamId, Number(standing.points) || 0]));
   const team1Group = groupPointsByTeam.get(row.team1?.id) || 0;
   const team2Group = groupPointsByTeam.get(row.team2?.id) || 0;
-  const team1Knockout = statusPoints[row.team1?.status] || 0;
-  const team2Knockout = statusPoints[row.team2?.status] || 0;
-  const tier2KnockoutBonus = statusProgress[row.team2?.status] >= statusProgress["Round of 32"] ? 10 : 0;
-  const tier2QuarterBonus = statusProgress[row.team2?.status] >= statusProgress["Quarter-final"] ? 20 : 0;
+  const team1Knockout = calculateTeamKnockoutPoints(row.team1);
+  const team2Knockout = calculateTeamKnockoutPoints(row.team2);
   const lines = [
     { label: `${row.team1?.flag || ""} ${row.team1?.country || "Tier 1 TBC"} group`, points: team1Group },
-    { label: `${row.team1?.flag || ""} ${row.team1?.country || "Tier 1 TBC"} knockout`, points: team1Knockout },
+    { label: `${row.team1?.flag || ""} ${row.team1?.country || "Tier 1 TBC"} knockout wins`, points: team1Knockout },
     { label: `${row.team2?.flag || ""} ${row.team2?.country || "Tier 2 TBC"} group`, points: team2Group },
-    { label: `${row.team2?.flag || ""} ${row.team2?.country || "Tier 2 TBC"} knockout`, points: team2Knockout },
+    { label: `${row.team2?.flag || ""} ${row.team2?.country || "Tier 2 TBC"} knockout wins`, points: team2Knockout },
   ];
 
-  if (tier2KnockoutBonus) lines.push({ label: "Tier 2 knockout bonus", points: tier2KnockoutBonus });
-  if (tier2QuarterBonus) lines.push({ label: "Tier 2 quarter-final bonus", points: tier2QuarterBonus });
-
   return {
-    total: team1Group + team2Group + team1Knockout + team2Knockout + tier2KnockoutBonus + tier2QuarterBonus,
+    total: team1Group + team2Group + team1Knockout + team2Knockout,
     lines,
   };
 }
@@ -1230,7 +1237,7 @@ function LeaderboardTable({ leaderboard, groupStandings = [], managerMode = fals
                     i
                   </button>
                   <span className="info-popover" role="tooltip">
-                    Total points include both assigned teams’ group-stage points, plus knockout progress: Round of 32 5, Round of 16 10, Quarter-final 20, Semi-final 35, Finalist 50, Champion 100. Tier 2 bonus: +10 for knockouts, +20 for quarter-final or better.
+                    Group-stage table points count equally for both tiers. In the knockouts, each win and progression earns a Tier 1 team 3 points or a Tier 2 team 6 points. Reaching the Round of 32 alone does not add points.
                   </span>
                 </span>
               </span>

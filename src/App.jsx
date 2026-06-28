@@ -345,7 +345,7 @@ function App() {
         </div>
       </header>
 
-      <main className={`site-main mx-auto max-w-7xl px-4 py-6 md:py-8 ${activeView === "TV View" ? "site-main-tv" : ""}`}>
+      <main className={`site-main mx-auto max-w-7xl px-4 py-6 md:py-8 ${activeView === "TV View" ? "site-main-tv" : ""} ${activeView === "Bracket" ? "site-main-bracket" : ""}`}>
         {publicViews.includes(activeView) || canEditActiveView ? (
           viewMap[activeView]
         ) : (
@@ -872,7 +872,18 @@ function BracketTab({ state, updateState, showToast, canEdit, unlockCurrentView 
   const groupsHidden = Boolean(state.settings.groupsHidden);
 
   return (
-    <div className="space-y-5">
+    <div className="bracket-page space-y-5">
+      <Bracket
+        rounds={state.bracket}
+        thirdPlaceMatch={state.bracketThirdPlace}
+        teams={state.teams}
+        standings={state.groupStandings}
+        canEdit={canEdit}
+        onChange={(bracket) => updateState({ bracket })}
+        onThirdPlaceChange={(bracketThirdPlace) => updateState({ bracketThirdPlace })}
+        presentation={groupsHidden}
+        hero
+      />
       {!canEdit && <EditUnlockPanel label="bracket editing" onUnlock={unlockCurrentView} showToast={showToast} />}
       <section className="panel p-4">
         <div className="flex flex-wrap gap-3">
@@ -889,16 +900,6 @@ function BracketTab({ state, updateState, showToast, canEdit, unlockCurrentView 
           canEdit={canEdit}
         />
       )}
-      <Bracket
-        rounds={state.bracket}
-        thirdPlaceMatch={state.bracketThirdPlace}
-        teams={state.teams}
-        standings={state.groupStandings}
-        canEdit={canEdit}
-        onChange={(bracket) => updateState({ bracket })}
-        onThirdPlaceChange={(bracketThirdPlace) => updateState({ bracketThirdPlace })}
-        presentation={groupsHidden}
-      />
     </div>
   );
 }
@@ -1322,7 +1323,7 @@ const bracketDestinations = Object.entries(bracketFeeders).reduce((destinations,
   return destinations;
 }, {});
 
-function Bracket({ rounds, thirdPlaceMatch, teams, standings, canEdit, onChange, onThirdPlaceChange, presentation = false }) {
+function Bracket({ rounds, thirdPlaceMatch, teams, standings, canEdit, onChange, onThirdPlaceChange, presentation = false, hero = false }) {
   const bracketRounds = rounds?.length ? rounds : createDefaultBracket();
   const round32 = bracketRounds[0]?.matches || [];
   const round16 = bracketRounds[1]?.matches || [];
@@ -1381,8 +1382,8 @@ function Bracket({ rounds, thirdPlaceMatch, teams, standings, canEdit, onChange,
   );
 
   return (
-    <section className={presentation ? "space-y-3" : "space-y-5"}>
-      {!presentation ? (
+    <section className={`${presentation ? "space-y-3" : "space-y-5"} ${hero ? "bracket-hero" : ""}`}>
+      {!presentation && !hero ? (
       <div className="panel p-5">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
@@ -1401,7 +1402,7 @@ function Bracket({ rounds, thirdPlaceMatch, teams, standings, canEdit, onChange,
         bracketActions && <div className="bracket-action-bar">{bracketActions}</div>
       )}
 
-      <div className={`bracket-shell ${presentation ? "bracket-presentation" : ""}`}>
+      <div className={`bracket-shell ${presentation ? "bracket-presentation" : ""} ${hero ? "bracket-shell-hero" : ""}`}>
         <div className="bracket-board" aria-label="Editable knockout bracket">
           <div className="bracket-side">
             <BracketColumn title="Round of 32" roundIndex={0} matches={round32.slice(0, 8)} startIndex={0} teams={teams} canEdit={canEdit} onUpdate={updateMatch} />

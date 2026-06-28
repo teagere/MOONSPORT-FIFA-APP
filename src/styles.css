@@ -147,6 +147,12 @@ textarea {
   padding-bottom: 12px;
 }
 
+.site-main.site-main-bracket {
+  max-width: min(100vw, 1880px);
+  padding-top: clamp(12px, 1.5vw, 22px);
+  padding-inline: clamp(8px, 1.4vw, 24px);
+}
+
 .brand-lockup {
   display: grid;
   min-width: 0;
@@ -1342,6 +1348,15 @@ td {
   justify-content: flex-end;
 }
 
+.bracket-hero .bracket-action-bar {
+  margin-bottom: 8px;
+}
+
+.bracket-shell-hero {
+  width: 100%;
+  margin-inline: auto;
+}
+
 .bracket-presentation {
   width: min(100%, calc((100vh - 205px) * 16 / 9));
   height: min(calc(100vh - 205px), calc((100vw - 2rem) * 9 / 16));
@@ -1350,6 +1365,12 @@ td {
   overflow-x: auto;
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+
+.bracket-hero .bracket-presentation {
+  width: 100%;
+  height: min(calc(100vh - 185px), calc((100vw - 1.5rem) * 9 / 16));
+  min-height: 640px;
 }
 
 .bracket-presentation .bracket-board {
@@ -1438,6 +1459,43 @@ td {
   gap: 28px;
   min-width: 2100px;
   padding: 28px;
+}
+
+.bracket-shell-hero .bracket-board {
+  grid-template-columns: minmax(0, 1fr) 170px minmax(0, 1fr);
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+}
+
+.bracket-shell-hero .bracket-side {
+  gap: 8px;
+}
+
+.bracket-shell-hero .bracket-column h3 {
+  font-size: 0.56rem;
+}
+
+.bracket-shell-hero .bracket-match {
+  min-height: 66px;
+  padding: 6px;
+}
+
+.bracket-shell-hero .bracket-match-featured {
+  min-height: 86px;
+}
+
+.bracket-shell-hero .bracket-kickoff {
+  width: 62px;
+  font-size: 0.46rem;
+}
+
+.bracket-shell-hero .bracket-slot,
+.bracket-shell-hero .bracket-slot-static {
+  min-height: 18px;
+  margin-top: 3px;
+  padding: 2px 5px;
+  font-size: 0.48rem;
 }
 
 .bracket-side {

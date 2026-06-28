@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { createDefaultBracket, createDefaultGroupStandings, createDefaultThirdPlaceMatch, seedState, TEAM_STATUSES } from "./data/seedData.js";
+import { createDefaultBracket, createDefaultGroupStandings, createDefaultThirdPlaceMatch, seedState, STAGES, TEAM_STATUSES } from "./data/seedData.js";
 import {
   buildLeaderboard,
   calculatePersonStatus,
@@ -27,6 +27,36 @@ const publicViews = ["Leaderboard", "Bracket", "TV View", "Prizes"];
 
 const officialWarning =
   "Team rankings data is seeded from the official FIFA World Cup 2026 teams page and FIFA approved men’s rankings data.";
+
+const teamStatusStageMap = {
+  "Round of 32": "Round of 32",
+  "Round of 16": "Round of 16",
+  "Quarter-final": "Quarter-finals",
+  "Semi-final": "Semi-finals",
+  Finalist: "Final",
+  Champion: "Champion",
+};
+
+function getStageIndex(stage) {
+  return Math.max(0, STAGES.indexOf(stage));
+}
+
+function getDisplayStage(state) {
+  const configuredStageIndex = getStageIndex(state.settings.currentStage);
+  const teamStageIndex = Math.max(
+    0,
+    ...state.teams.map((team) => getStageIndex(teamStatusStageMap[team.status]))
+  );
+  const bracketStageIndex = Math.max(
+    0,
+    ...(state.bracket || []).map((round, roundIndex) => {
+      const hasFilledSlot = (round.matches || []).some((match) => match.teamAId || match.teamBId || match.winnerId);
+      return hasFilledSlot ? roundIndex + 1 : 0;
+    })
+  );
+
+  return STAGES[Math.max(configuredStageIndex, teamStageIndex, bracketStageIndex)] || "Group Stage";
+}
 
 function restoreOfficialTeams(existingTeams = []) {
   const existingById = new Map(existingTeams.map((team) => [team.id, team]));
@@ -744,15 +774,16 @@ function RevealSlot({ label, team, onReveal }) {
 }
 
 function LeaderboardHub({ state, leaderboard }) {
-  const alivePeople = leaderboard.filter((row) => row.status === "Active" || row.status === "Partially Active");
+  const displayStage = getDisplayStage(state);
+  const alivePeople = leaderboard.filter((row) => row.status !== "Knocked Out");
   const aliveTeams = state.teams.filter((team) => team.status !== "Knocked out");
 
   return (
     <div className="space-y-5">
       <section className="grid gap-4 md:grid-cols-4">
-        <StatCard label="Tournament stage" value={state.settings.currentStage} tone="text-gold" />
-        <StatCard label="People still alive" value={alivePeople.length} />
-        <StatCard label="Teams still alive" value={aliveTeams.length} />
+        <StatCard label="Tournament stage" value={displayStage} tone="text-gold" />
+        <StatCard label="People still alive" value={`${alivePeople.length}/${state.staff.length}`} />
+        <StatCard label="Teams still alive" value={`${aliveTeams.length}/${state.teams.length}`} />
         <StatCard label="Participants" value={state.staff.length} />
       </section>
 
@@ -765,7 +796,8 @@ function LeaderboardHub({ state, leaderboard }) {
 }
 
 function TvLeaderboard({ state, leaderboard }) {
-  const alivePeople = leaderboard.filter((row) => row.status === "Active" || row.status === "Partially Active");
+  const displayStage = getDisplayStage(state);
+  const alivePeople = leaderboard.filter((row) => row.status !== "Knocked Out");
   const aliveTeams = state.teams.filter((team) => team.status !== "Knocked out");
   const tvColumnCount = 4;
   const columns = splitIntoColumns(leaderboard, tvColumnCount);
@@ -777,9 +809,9 @@ function TvLeaderboard({ state, leaderboard }) {
       <div className={`tv-frame ${compactMode ? "tv-frame-compact" : ""} ${denseMode ? "tv-frame-dense" : ""}`}>
         <div className="tv-header">
           <div className="tv-metrics">
-            <span><strong>Stage:</strong> {state.settings.currentStage}</span>
-            <span><strong>People Alive:</strong> {alivePeople.length}</span>
-            <span><strong>Teams Alive:</strong> {aliveTeams.length}</span>
+            <span><strong>Stage:</strong> {displayStage}</span>
+            <span><strong>People Alive:</strong> {alivePeople.length}/{state.staff.length}</span>
+            <span><strong>Teams Alive:</strong> {aliveTeams.length}/{state.teams.length}</span>
           </div>
         </div>
 

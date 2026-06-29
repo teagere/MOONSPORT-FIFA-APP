@@ -37,6 +37,22 @@ const teamStatusStageMap = {
   Champion: "Champion",
 };
 
+const bracketWinnerProgressByRound = [
+  { status: "Round of 16", wins: 1 },
+  { status: "Quarter-final", wins: 2 },
+  { status: "Semi-final", wins: 3 },
+  { status: "Finalist", wins: 4 },
+  { status: "Champion", wins: 5 },
+];
+
+const bracketLoserProgressByRound = [
+  { status: "Knocked out", wins: 0 },
+  { status: "Knocked out", wins: 1 },
+  { status: "Knocked out", wins: 2 },
+  { status: "Knocked out", wins: 3 },
+  { status: "Finalist", wins: 4 },
+];
+
 function getStageIndex(stage) {
   return Math.max(0, STAGES.indexOf(stage));
 }
@@ -56,6 +72,53 @@ function getDisplayStage(state) {
   );
 
   return STAGES[Math.max(configuredStageIndex, teamStageIndex, bracketStageIndex)] || "Group Stage";
+}
+
+function applyKnockoutBracketToTeams(teams, bracketRounds = []) {
+  const bracketTeamIds = new Set();
+  const progressByTeamId = new Map();
+
+  bracketRounds.forEach((round) => {
+    (round.matches || []).forEach((match) => {
+      [match.teamAId, match.teamBId].filter(Boolean).forEach((teamId) => bracketTeamIds.add(teamId));
+    });
+  });
+
+  bracketTeamIds.forEach((teamId) => {
+    progressByTeamId.set(teamId, { status: "Round of 32", wins: 0 });
+  });
+
+  bracketRounds.forEach((round, roundIndex) => {
+    (round.matches || []).forEach((match) => {
+      if (!match.winnerId || ![match.teamAId, match.teamBId].includes(match.winnerId)) return;
+
+      const winnerProgress = bracketWinnerProgressByRound[roundIndex];
+      const loserProgress = bracketLoserProgressByRound[roundIndex];
+      if (!winnerProgress || !loserProgress) return;
+
+      progressByTeamId.set(match.winnerId, winnerProgress);
+      [match.teamAId, match.teamBId]
+        .filter((teamId) => teamId && teamId !== match.winnerId)
+        .forEach((teamId) => {
+          const current = progressByTeamId.get(teamId);
+          if (!current || current.wins <= loserProgress.wins) {
+            progressByTeamId.set(teamId, loserProgress);
+          }
+        });
+    });
+  });
+
+  return recalculateTiers(
+    teams.map((team) => {
+      const progress = progressByTeamId.get(team.id);
+      if (!progress) return team;
+      return {
+        ...team,
+        status: progress.status,
+        knockoutWins: progress.wins,
+      };
+    })
+  );
 }
 
 function restoreOfficialTeams(existingTeams = []) {
@@ -105,7 +168,9 @@ function normalizeState(input) {
   const stored = input || seedState;
   const shouldRestoreTeams = stored.settings?.dataVersion !== DATA_VERSION || stored.teams?.length !== 48;
   const shouldRestoreStaff = stored.settings?.staffVersion !== STAFF_VERSION;
-  const teams = shouldRestoreTeams ? restoreOfficialTeams(stored.teams) : recalculateTiers(stored.teams);
+  const normalizedBracket = normalizeBracket(stored.bracket);
+  const baseTeams = shouldRestoreTeams ? restoreOfficialTeams(stored.teams) : recalculateTiers(stored.teams);
+  const teams = applyKnockoutBracketToTeams(baseTeams, normalizedBracket);
   const validTeamIds = new Set(teams.map((team) => team.id));
   const groupStandings = normalizeGroupStandings(stored.groupStandings, teams);
   const staffSource = shouldRestoreStaff ? seedState.staff : stored.staff?.length ? stored.staff : seedState.staff;
@@ -121,7 +186,7 @@ function normalizeState(input) {
     teams,
     staff,
     groupStandings,
-    bracket: normalizeBracket(stored.bracket),
+    bracket: normalizedBracket,
     bracketThirdPlace: normalizeThirdPlaceMatch(stored.bracketThirdPlace),
     settings: {
       ...seedState.settings,
@@ -903,6 +968,13 @@ function getPointsBreakdown(row, groupStandings = []) {
 function BracketTab({ state, updateState, showToast, canEdit, unlockCurrentView }) {
   const groupsHidden = Boolean(state.settings.groupsHidden);
 
+  function updateBracket(bracket) {
+    updateState({
+      bracket,
+      teams: applyKnockoutBracketToTeams(state.teams, bracket),
+    });
+  }
+
   return (
     <div className="bracket-page space-y-5">
       <Bracket
@@ -911,7 +983,7 @@ function BracketTab({ state, updateState, showToast, canEdit, unlockCurrentView 
         teams={state.teams}
         standings={state.groupStandings}
         canEdit={canEdit}
-        onChange={(bracket) => updateState({ bracket })}
+        onChange={updateBracket}
         onThirdPlaceChange={(bracketThirdPlace) => updateState({ bracketThirdPlace })}
         presentation={groupsHidden}
         hero

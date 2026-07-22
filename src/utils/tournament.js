@@ -100,13 +100,19 @@ export function getTeam(teamId, teams) {
   return teams.find((team) => team.id === teamId);
 }
 
+export function isTeamAlive(team, allTeams = []) {
+  if (!team || team.status === "Knocked out") return false;
+  const hasChampion = allTeams.some((candidate) => candidate.status === "Champion");
+  return !(hasChampion && team.status === "Finalist");
+}
+
 export function calculatePersonStatus(person, teams) {
   const team1 = getTeam(person.tier1TeamId, teams);
   const team2 = getTeam(person.tier2TeamId, teams);
   const statuses = [team1?.status, team2?.status].filter(Boolean);
   if (statuses.includes("Champion")) return "Winner";
   if (!statuses.length) return "Active";
-  const activeCount = statuses.filter((status) => status !== "Knocked out").length;
+  const activeCount = [team1, team2].filter((team) => isTeamAlive(team, teams)).length;
   if (activeCount === 2) return "Active";
   if (activeCount === 1) return "Partially Active";
   return "Knocked Out";

@@ -10,6 +10,7 @@ import {
   getKnockoutWinsForStatus,
   getTeam,
   getTeamsByTier,
+  isTeamAlive,
   recalculateTiers,
   statusProgress,
 } from "./utils/tournament.js";
@@ -612,7 +613,13 @@ function ManagerWorkspace({ state, updateState, showToast, leaderboard }) {
       <section className="space-y-5">
         <div className="panel p-5">
           <h2 className="text-xl font-black">Participant List</h2>
-          <LeaderboardTable leaderboard={leaderboard} managerMode onUpdateStaff={updateStaff} onDeleteStaff={(id) => updateState({ staff: state.staff.filter((person) => person.id !== id) })} />
+          <LeaderboardTable
+            leaderboard={leaderboard}
+            managerMode
+            tournamentComplete={state.teams.some((team) => team.status === "Champion")}
+            onUpdateStaff={updateStaff}
+            onDeleteStaff={(id) => updateState({ staff: state.staff.filter((person) => person.id !== id) })}
+          />
         </div>
       </section>
     </div>
@@ -841,7 +848,7 @@ function RevealSlot({ label, team, onReveal }) {
 function LeaderboardHub({ state, leaderboard }) {
   const displayStage = getDisplayStage(state);
   const alivePeople = leaderboard.filter((row) => row.status !== "Knocked Out");
-  const aliveTeams = state.teams.filter((team) => team.status !== "Knocked out");
+  const aliveTeams = state.teams.filter((team) => isTeamAlive(team, state.teams));
 
   return (
     <div className="space-y-5">
@@ -854,7 +861,7 @@ function LeaderboardHub({ state, leaderboard }) {
 
       <section className="panel p-5">
         <h2 className="text-xl font-black">Leaderboard</h2>
-        <LeaderboardTable leaderboard={leaderboard} groupStandings={state.groupStandings} />
+        <LeaderboardTable leaderboard={leaderboard} groupStandings={state.groupStandings} tournamentComplete={state.teams.some((team) => team.status === "Champion")} />
       </section>
     </div>
   );
@@ -863,7 +870,8 @@ function LeaderboardHub({ state, leaderboard }) {
 function TvLeaderboard({ state, leaderboard }) {
   const displayStage = getDisplayStage(state);
   const alivePeople = leaderboard.filter((row) => row.status !== "Knocked Out");
-  const aliveTeams = state.teams.filter((team) => team.status !== "Knocked out");
+  const aliveTeams = state.teams.filter((team) => isTeamAlive(team, state.teams));
+  const tournamentComplete = state.teams.some((team) => team.status === "Champion");
   const tvColumnCount = 4;
   const columns = splitIntoColumns(leaderboard, tvColumnCount);
   const compactMode = leaderboard.length > 40;
@@ -885,7 +893,7 @@ function TvLeaderboard({ state, leaderboard }) {
             <div className={`tv-column ${columnIndex === 0 ? "tv-column-featured" : ""}`} key={columnIndex}>
               {column.map((row, localIndex) => {
                 const rank = columnIndex * Math.ceil(leaderboard.length / tvColumnCount) + localIndex + 1;
-                return <TvLeaderboardRow key={row.id} row={row} rank={rank} localIndex={localIndex} groupStandings={state.groupStandings} />;
+                return <TvLeaderboardRow key={row.id} row={row} rank={rank} localIndex={localIndex} groupStandings={state.groupStandings} tournamentComplete={tournamentComplete} />;
               })}
             </div>
           ))}
@@ -893,7 +901,7 @@ function TvLeaderboard({ state, leaderboard }) {
 
         <div className="tv-mobile-list">
           {leaderboard.map((row, index) => (
-            <TvLeaderboardRow key={row.id} row={row} rank={index + 1} localIndex={index} groupStandings={state.groupStandings} />
+            <TvLeaderboardRow key={row.id} row={row} rank={index + 1} localIndex={index} groupStandings={state.groupStandings} tournamentComplete={tournamentComplete} />
           ))}
         </div>
       </div>
@@ -901,15 +909,14 @@ function TvLeaderboard({ state, leaderboard }) {
   );
 }
 
-function TvLeaderboardRow({ row, rank, localIndex = 0, groupStandings }) {
-  const status = calculatePersonStatus(row, [row.team1, row.team2].filter(Boolean));
-  const isOut = status === "Knocked Out";
+function TvLeaderboardRow({ row, rank, localIndex = 0, groupStandings, tournamentComplete = false }) {
+  const isOut = row.status === "Knocked Out";
   return (
     <article className={`tv-row ${rank <= 3 ? "tv-row-podium" : ""} ${isOut ? "tv-row-out" : ""} ${localIndex < 2 ? "points-tooltip-down" : ""}`}>
       <div className="tv-rank">{rank}</div>
       <div className="tv-person">
         <strong>{row.name}</strong>
-        <div className="tv-teams"><TeamLabel team={row.team1} compact /> <span className="tv-separator">/</span> <TeamLabel team={row.team2} compact /></div>
+        <div className="tv-teams"><TeamLabel team={row.team1} compact tournamentComplete={tournamentComplete} /> <span className="tv-separator">/</span> <TeamLabel team={row.team2} compact tournamentComplete={tournamentComplete} /></div>
       </div>
       <div className="tv-score">
         <strong>{row.points}</strong>
@@ -924,9 +931,9 @@ function splitIntoColumns(items, count) {
   return Array.from({ length: count }, (_, index) => items.slice(index * size, index * size + size));
 }
 
-function TeamLabel({ team, compact = false }) {
+function TeamLabel({ team, compact = false, tournamentComplete = false }) {
   if (!team) return <span className="team-label">TBC</span>;
-  const isOut = team.status === "Knocked out";
+  const isOut = team.status === "Knocked out" || (tournamentComplete && team.status === "Finalist");
   return <span className={`team-label ${isOut ? "team-label-out" : ""}`}>{team.flag} {compact ? team.country : team.country}</span>;
 }
 
@@ -1314,7 +1321,7 @@ function NumberField({ value, onChange, strong = false, disabled = false }) {
   );
 }
 
-function LeaderboardTable({ leaderboard, groupStandings = [], managerMode = false, onUpdateStaff, onDeleteStaff }) {
+function LeaderboardTable({ leaderboard, groupStandings = [], managerMode = false, onUpdateStaff, onDeleteStaff, tournamentComplete = false }) {
   const [showPointsInfo, setShowPointsInfo] = useState(false);
 
   return (
@@ -1353,7 +1360,7 @@ function LeaderboardTable({ leaderboard, groupStandings = [], managerMode = fals
         </thead>
         <tbody>
           {leaderboard.map((row, index) => {
-            const personStatus = calculatePersonStatus(row, [row.team1, row.team2].filter(Boolean));
+            const personStatus = row.status;
             const isOut = personStatus === "Knocked Out";
             return (
             <tr key={row.id} className={isOut ? "leaderboard-row-out" : ""}>
@@ -1365,8 +1372,8 @@ function LeaderboardTable({ leaderboard, groupStandings = [], managerMode = fals
                   <span className={`points-hover font-bold ${index < 2 ? "points-tooltip-down" : ""}`}>{row.name}<PointsBreakdown row={row} groupStandings={groupStandings} /></span>
                 )}
               </td>
-              <td><TeamLabel team={row.team1} /></td>
-              <td><TeamLabel team={row.team2} /></td>
+              <td><TeamLabel team={row.team1} tournamentComplete={tournamentComplete} /></td>
+              <td><TeamLabel team={row.team2} tournamentComplete={tournamentComplete} /></td>
               <td>{row.team1?.status || "TBC"} / {row.team2?.status || "TBC"}</td>
               <td className="text-lg font-black text-lime">{row.points}</td>
               <td><span className="badge">{personStatus}</span></td>

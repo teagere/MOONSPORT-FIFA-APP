@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createDefaultBracket, createDefaultGroupStandings, createDefaultThirdPlaceMatch, seedState, STAGES, TEAM_STATUSES } from "./data/seedData.js";
 import {
   buildLeaderboard,
-  calculatePersonStatus,
   calculateTeamKnockoutPoints,
   downloadFile,
   exportJson,

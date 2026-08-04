@@ -5,3 +5,4 @@ dist
 .env.local
 npm-debug.log*
 backup/moonsport-road-to-final-backup (1).json
+*.zip
